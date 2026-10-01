@@ -2,6 +2,7 @@
 
 #include "letters.h"
 #include "guy.h"
+#include "map.h"
 #include <gbdk/metasprites.h>
 #include <gb/cgb.h>
 
@@ -47,6 +48,11 @@ void init_gfx(void) {
     set_sprite_data(letters_TILE_ORIGIN,letters_TILE_COUNT,letters_tiles);
     set_sprite_palette(S_PAL(0), letters_PALETTE_COUNT, letters_palettes);
 
+    set_bkg_palette(S_PAL(0), 1, map_palettes);
+    set_bkg_data(map_TILE_ORIGIN, map_TILE_COUNT, map_tiles);
+    set_bkg_submap(0, 0, 32, 32, map_map, map_WIDTH/map_TILE_W);
+    // Fails?
+    set_bkg_submap_attributes(0, 0, 32, 32, map_map, map_WIDTH/map_TILE_W);
 
     // Activating layers
     SHOW_BKG;
