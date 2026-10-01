@@ -51,8 +51,7 @@ void init_gfx(void) {
     set_bkg_palette(S_PAL(0), 1, map_palettes);
     set_bkg_data(map_TILE_ORIGIN, map_TILE_COUNT, map_tiles);
     set_bkg_submap(0, 0, 32, 32, map_map, map_WIDTH/map_TILE_W);
-    // Fails?
-    set_bkg_submap_attributes(0, 0, 32, 32, map_map, map_WIDTH/map_TILE_W);
+    //set_bkg_submap_attributes(0, 0, 32, 32, map_map_attributes, map_MAP_ATTRIBUTES_WIDTH);
 
     // Activating layers
     SHOW_BKG;
