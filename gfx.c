@@ -65,7 +65,7 @@ void update_gfx(struct gamestate_t state) {
     //gprint("@");
 
     // Game main loop processing goes here
-    move_metasprite_ex(letters_metasprites[state.letters_tile], letters_TILE_ORIGIN, 0, LETTERS_SPRITE, 100, 100);
+    move_metasprite_ex(letters_metasprites[state.letters_tile], letters_TILE_ORIGIN, 0, LETTERS_SPRITE, 50, 140);
 
 //    move_sprite(GUY_TILE,state.oak_x.h, state.oak_y.h);
     move_metasprite_ex(ProfessorOak_metasprite, OAK_TILE_ORIGIN, 0, OAK_SPRITE, state.oak_x.h, state.oak_y.h);
