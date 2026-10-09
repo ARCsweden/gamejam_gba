@@ -17,9 +17,11 @@
 // Enemy large spells (2 wide)
 #define S_LARGE_SPRITE 10
 #define NUM_LARGE_E_SPELLS 4
+#define LARGE_E_SPELL_SIZE 2
 // Player spells (1 wide)
-#define P_SPELL_SPRITE (S_LARGE_SPRITE + NUM_LARGE_E_SPELLS * 2)
+#define P_SPELL_SPRITE (S_LARGE_SPRITE + NUM_LARGE_E_SPELLS * LARGE_E_SPELL_SIZE)
 #define NUM_PLAYER_SPELLS 4
+#define PLAYER_SPELL_SIZE 1
 // Enemy small spells (1 wide)
 #define S_SMALL_SPRITE (P_SPELL_SPRITE + NUM_PLAYER_SPELLS)
 #define NUM_SMALL_E_SPELLS (NUM_HW_SPRITES - S_SMALL_SPRITE)
