@@ -2,9 +2,11 @@
 
 #include "gamestate.h"
 
+/*
 #include "letters.h"
 #include "guy.h"
 #include "map.h"
+*/
 
 #include <gbdk/metasprites.h>
 #include <gb/cgb.h>
@@ -48,6 +50,7 @@ void init_gfx(void) {
     set_sprite_data(OAK_TILE_ORIGIN,4,ProfessorOak_tiles);
     set_sprite_palette(S_PAL(1), 1, ProfessorOak_palettes);
 
+    /*
     set_sprite_data(letters_TILE_ORIGIN,letters_TILE_COUNT,letters_tiles);
     set_sprite_palette(S_PAL(0), letters_PALETTE_COUNT, letters_palettes);
 
@@ -58,6 +61,7 @@ void init_gfx(void) {
     set_bkg_submap(0, 0, 32, 32, map_map, map_WIDTH/map_TILE_W);
     // Set the attributes layer in VRAM
     set_bkg_submap_attributes(0, 0, 32, 32, map_map_attributes, map_MAP_ATTRIBUTES_WIDTH);
+    */
 
     // Activating layers
     SHOW_BKG;
@@ -73,7 +77,7 @@ void update_gfx(void) {
     //gprint("@");
 
     // Game main loop processing goes here
-    move_metasprite_ex(letters_metasprites[state.letters_tile], letters_TILE_ORIGIN, 0, LETTERS_SPRITE, 50, 140);
+    //move_metasprite_ex(letters_metasprites[state.letters_tile], letters_TILE_ORIGIN, 0, LETTERS_SPRITE, 50, 140);
 
 //    move_sprite(GUY_TILE,state.oak_x.h, state.oak_y.h);
     move_metasprite_ex(ProfessorOak_metasprite, OAK_TILE_ORIGIN, 0, OAK_SPRITE, state.oak_x.h, state.oak_y.h);
