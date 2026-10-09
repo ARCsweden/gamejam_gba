@@ -1,11 +1,10 @@
 #include <gb/gb.h>
 #include <stdint.h>
 
-#include "gamestate.h"
-
 #include "audio.h"
 #include "gfx.h"
 #include "gamelogic.h"
+#include "gamestate.h"
 
 void main(void)
 {
@@ -13,18 +12,16 @@ void main(void)
     init_gfx();
     // Initialize audio
     init_audio();
-
-    // Initialize game state
-    struct gamestate_t state;
-    state.oak_x.w = TO_FIXED(80, 0);
-    state.oak_y.w = TO_FIXED(80, 0);
-    state.letters_tile = 0;
+    // Set the initial variables
+    init_gamestate();
 
     // Loop forever
     while(1) {
-        state = update_game(state);
+        // Read input and update ingame logic
+        update_game();
 
-        update_gfx(state);
+        // Render graphics
+        update_gfx();
 
 		// Done processing, yield CPU and wait for start of next frame
         vsync();

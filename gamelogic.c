@@ -1,12 +1,15 @@
 #include "gamelogic.h"
 
+// Included to access state variable
+#include "gamestate.h"
+
 // Holding buttons pressed
 uint8_t buttons = 0;
 uint8_t buttons_prev = 0;
 
 uint8_t frame = 0;
 
-struct gamestate_t update_game(struct gamestate_t state) {
+void update_game(void) {
     // Input
     // J_START, J_SELECT, J_A, J_B, J_UP, J_DOWN, J_LEFT, J_RIGHT
     buttons = joypad();
@@ -35,7 +38,5 @@ struct gamestate_t update_game(struct gamestate_t state) {
         state.letters_tile++;
         if(state.letters_tile >= 4) state.letters_tile = 0;
     }
-
-    return state;
 }
 

@@ -1,8 +1,11 @@
 #include "gfx.h"
 
+#include "gamestate.h"
+
 #include "letters.h"
 #include "guy.h"
 #include "map.h"
+
 #include <gbdk/metasprites.h>
 #include <gb/cgb.h>
 
@@ -59,7 +62,7 @@ void init_gfx(void) {
     //SHOW_WIN;
 }
 
-void update_gfx(struct gamestate_t state) {
+void update_gfx(void) {
     //gotogxy(x, y);
     //color(BLACK, WHITE, SOLID);
     //gprint("@");

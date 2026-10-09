@@ -14,4 +14,8 @@ struct gamestate_t {
     uint8_t letters_tile;
 };
 
+extern struct gamestate_t state;
+
+void init_gamestate(void);
+
 #endif
