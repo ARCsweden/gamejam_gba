@@ -8,7 +8,7 @@ ifndef GBDK_HOME
 	GBDK_HOME = ../../../
 endif
 
-LCC = $(GBDK_HOME)/bin/lcc 
+LCC = $(GBDK_HOME)/bin/lcc -Wa-l -Wl-m
 
 # GBDK_DEBUG = ON
 ifdef GBDK_DEBUG
@@ -34,7 +34,7 @@ compile.bat: Makefile
 
 # Compile and link all source files in a single call to LCC
 $(BINS):	$(CSOURCES) $(ASMSOURCES)
-	$(LCC) $(LCCFLAGS) -o $@ $(CSOURCES) $(ASMSOURCES) $(HUGEDRIVER)
+	$(LCC) $(LCCFLAGS) -Wm-yC -o $@ $(CSOURCES) $(ASMSOURCES) $(HUGEDRIVER)
 
 clean:
 	rm -f *.o *.lst *.map *.gb *.ihx *.sym *.cdb *.adb *.asm *.noi *.rst
