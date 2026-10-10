@@ -10,8 +10,10 @@ typedef enum ins_type {
     WAIT = 0,
     MOVE = 1,
     SHOOT_SMPL = 2,
-    SHOOT_LRG = 3,
-    NEW_INS = 4
+    SHOOT_SMPL_L = 3,
+    SHOOT_SMPL_R = 4,
+    SHOOT_LRG = 5,
+    NEW_INS = 6
 }ins_type;
 
 typedef struct instruction {
