@@ -6,6 +6,7 @@
 #include "assets/p_spell.h"
 
 #include "assets/heart.h"
+#include "assets/heart_filled.h"
 
 
 // SPRITE PALETTES:
