@@ -8,13 +8,17 @@ uint8_t active_ins_index;
 uint8_t append_ins_index; 
 uint16_t progress;
 
- Instruction wait_1000ms = {WAIT, 0, 60};
- Instruction wait_500ms = {WAIT, 0, 30};
- Instruction skip = {WAIT, 0, 0};
- Instruction move_right_small = {MOVE, 1, 30};
- Instruction move_left_small = {MOVE, -1, 30};
- Instruction new_inst = {NEW_INS, 0, 0};
- Instruction shoot_simple = {SHOOT_SMPL, 0, 0};
+void load_template(Instruction* template[]);
+
+Instruction wait_1000ms = {WAIT, 0, 60};
+Instruction wait_500ms = {WAIT, 0, 30};
+Instruction skip = {WAIT, 0, 0};
+Instruction move_right_small = {MOVE, 1, 30};
+Instruction move_left_small = {MOVE, -1, 30};
+Instruction new_inst = {NEW_INS, 0, 0};
+Instruction shoot_simple = {SHOOT_SMPL, 0, 0};
+
+Instruction* template1[7] = {&move_right_small,&wait_1000ms,&move_left_small,&shoot_simple,&wait_500ms,&shoot_simple,&new_inst};
 
 void init_boss_logic(void) {
     progress = 0;
@@ -25,17 +29,7 @@ void init_boss_logic(void) {
     for (int i = 0; i < MAX_INST; i++){
         instruction_list[i] = &skip;
     }
-    instruction_list[0] = &move_right_small;
-    instruction_list[1] = &wait_1000ms;
-    instruction_list[2] = &move_left_small;
-    instruction_list[3] = &wait_500ms;
-    instruction_list[4] = &move_left_small;
-    instruction_list[5] = &shoot_simple;
-    instruction_list[6] = &move_left_small;
-    instruction_list[7] = &move_right_small;
-    instruction_list[8] = &wait_500ms;
-    instruction_list[9] = &move_right_small;
-    instruction_list[10] = &wait_1000ms;
+    load_template(template1);
 }
 
 void update_boss_logic(void) {
@@ -70,7 +64,7 @@ void update_boss_logic(void) {
         case SHOOT_LRG:
             break;
         case NEW_INS:
-            //create_new_inst();
+            load_template(template1);
             break;
         default:
             break;
@@ -80,4 +74,16 @@ void update_boss_logic(void) {
         progress = 0;
     }
     else progress++;
+}
+
+void load_template(Instruction* template[]){
+    uint8_t template_index = 0;
+    while (template[template_index]->type != NEW_INS){
+        instruction_list[append_ins_index] = template[template_index];
+        append_ins_index = (append_ins_index + 1)%MAX_INST;
+        template_index ++;
+    }   
+    instruction_list[append_ins_index] = &new_inst;
+    append_ins_index = (append_ins_index + 1)%MAX_INST;
+
 }
