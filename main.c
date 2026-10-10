@@ -5,6 +5,7 @@
 #include "gfx.h"
 #include "gamelogic.h"
 #include "gamestate.h"
+#include "boss.h"
 
 void main(void)
 {
@@ -14,6 +15,8 @@ void main(void)
     init_audio();
     // Set the initial variables
     init_gamestate();
+    // set initial boss logic
+    init_boss_logic();
 
     // Loop forever
     while(1) {
