@@ -49,17 +49,35 @@ void update_game(void) {
     }
     if((buttons & J_A) && state.player.spell_cooldown == 0) {
         // Do something on A pressed (once)
-        if(spawn_player_projectile(state.player.pos_x.h, state.player.pos_y.h - 8)) {
+        if(spawn_player_projectile()) {
             state.player.spell_cooldown = PLAYER_SPELL_COOLDOWN;
             sound_ch1_counter = shoot_sfx();
         }
     }
+    if((buttons & J_B) && state.boss.spell_cooldown == 0) {
+        fixed speed_x;
+        fixed speed_y;
+        speed_x.w = 0;
+        speed_y.w = BOSS_SPELL_SPEED;
+        // Do something on A pressed (once)
+        if(spawn_enemy_projectile(
+            state.boss.pos_x.h,
+            state.boss.pos_y.h + 8,
+            0, // Straight down
+            speed_x,
+            speed_y
+        )) {
+            state.boss.spell_cooldown = BOSS_SPELL_COOLDOWN;
+        }
+    }
+
     buttons_prev = buttons;
 
     update_boss_logic();
 
     // Frame timer dependent animation
     if(state.player.spell_cooldown > 0) state.player.spell_cooldown--;
+    if(state.boss.spell_cooldown > 0) state.boss.spell_cooldown--;
 
     // Sound Handler
     // Counters for each sound channel to resume playing music after a SFX
