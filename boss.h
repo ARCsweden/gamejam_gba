@@ -5,6 +5,7 @@
 #include <gb/gb.h>
 
 #define MAX_INST 16
+#define BOSS_MAXHP 4 
 
 typedef enum ins_type {
     WAIT = 0,
@@ -25,6 +26,7 @@ typedef struct boss_t {
     fixed pos_x;
     fixed pos_y;
     uint8_t spell_cooldown;
+    uint8_t health;
 }boss_t;
 
 void init_boss_logic(void);

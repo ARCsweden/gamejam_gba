@@ -37,7 +37,9 @@ void update_boss_logic(void) {
     fixed speed_y;
     speed_x.w = 0;
     speed_y.w = BOSS_SPELL_SPEED;
-    
+    if(state.boss.health == 0){
+        return;
+    }
     switch (instruction_list[active_ins_index]->type) {
         case WAIT:
             break;
