@@ -122,6 +122,12 @@ void update_game(void) {
                 player_projectile_pool[i].alive = 0;
                 hide_sprite(player_projectile_pool[i].hw_sprite);
                 // TODO: Player hits boss logic
+                if (state.boss.health == 0) {
+                    // remove boss wizard and play some vfx
+                    
+                }
+                else state.boss.health--;
+
             }
         }
     }
