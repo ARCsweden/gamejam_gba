@@ -2,11 +2,9 @@
 
 #include "gamestate.h"
 #include "sprite_manager.h"
-
-#include "art.h"
-
 #include "player.h"
 #include "art.h"
+#include "font.h"
 
 #include <gbdk/metasprites.h>
 #include <gb/cgb.h>
@@ -23,8 +21,8 @@ void init_gfx(void) {
 
     init_player_gfx();
     init_ui_gfx();
+    init_font();
     move_win(7, 136);
-
 
     // Initialize tiles (note sprite and bkg tiles 128-255 overlap)
     set_bkg_data(sand_TILE_ORIGIN, 1, sand_tiles);
@@ -57,6 +55,8 @@ void update_gfx(void) {
     set_win_tiles(0, 0, 1, 1, heart_filled_map);
     set_win_tiles(1, 0, 1, 1, heart_map);
     set_win_tiles(2, 0, 1, 1, heart_map);
+    char text[12] = "WIZARD!";
+    render_text(8, 0, text);
 
 
     // Render boss wizard

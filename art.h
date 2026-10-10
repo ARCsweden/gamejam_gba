@@ -9,6 +9,8 @@
 #include "assets/heart.h"
 #include "assets/heart_filled.h"
 
+#include "assets/Font.h"
+
 
 // SPRITE PALETTES:
 // 0: Carpet
@@ -33,5 +35,6 @@
 
 void init_player_gfx(void);
 void init_ui_gfx(void);
+void init_font(void);
 
 #endif

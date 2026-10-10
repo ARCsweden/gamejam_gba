@@ -19,6 +19,10 @@ void init_ui_gfx(void) {
     set_win_data(heart_filled_TILE_ORIGIN, heart_filled_TILE_COUNT, heart_filled_tiles);
 }
 
+void init_font(void) {
+    set_bkg_data(Font_TILE_ORIGIN, Font_TILE_COUNT, Font_tiles);
+}
+
 void init_boss_gfx(void) {
     //tbd
 }
