@@ -21,6 +21,7 @@ void init_gamestate(void) {
     state.boss.vel_y.w = TO_FIXED(1, 0);
     state.boss.dir = 0;
 
+    state.boss.health = BOSS_MAXHP;
     state.boss.spell_cooldown = 0;
 
     state.player.spell_cooldown = 0;
