@@ -8,7 +8,7 @@
 #include <gbdk/platform.h>
 #include <gbdk/metasprites.h>
 
-#define wizard_TILE_ORIGIN 2
+#define wizard_TILE_ORIGIN 4
 #define wizard_TILE_W 8
 #define wizard_TILE_H 16
 #define wizard_WIDTH 16
