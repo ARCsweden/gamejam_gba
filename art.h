@@ -1,9 +1,9 @@
 #ifndef ART_H
 #define ART_H
 
-#include "carpet.h"
-#include "wizard.h"
-#include "p_spell.h"
+#include "assets/carpet.h"
+#include "assets/wizard.h"
+#include "assets/p_spell.h"
 
 
 // SPRITE PALETTES:
