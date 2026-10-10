@@ -26,6 +26,8 @@
 #define BOSS_ACC_Y 8 // Note, fixed fractional
 #define BOSS_PEAK_Y_SPEED 1 // Note, fixed integer
 
+#define PLAYER_MAX_HP 5
+
 struct gamestate_t {
     struct player_t player;
     struct boss_t boss;

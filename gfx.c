@@ -17,6 +17,7 @@ const uint8_t bg_tile_row[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 const uint8_t bg_attr_row[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
 const uint8_t bg_attr = 1;
 
+void draw_health(void);
 
 void init_gfx(void) {
     SPRITES_8x16;
@@ -48,7 +49,16 @@ void init_gfx(void) {
 void update_gfx(void) {
     // Render player wizard
     move_metasprite_ex(carpet_metasprites[0], carpet_TILE_ORIGIN, 0, P_CARPET_SPRITE, state.player.pos_x.h,  state.player.pos_y.h);
-    move_metasprite_ex(wizard_metasprites[state.player.anim_frame], wizard_TILE_ORIGIN, 0, P_WIZARD_SPRITE, state.player.pos_x.h, state.player.pos_y.h - 5);
+    if(state.player.hp > 0) {
+        move_metasprite_ex(wizard_metasprites[state.player.anim_frame], wizard_TILE_ORIGIN, 0, P_WIZARD_SPRITE, state.player.pos_x.h, state.player.pos_y.h - 5);
+    } else { // Dead
+        if(state.player.dead_pos_y.h > SPRITE_LAYER_OOB_Y) {
+            hide_sprite(P_WIZARD_SPRITE);
+            hide_sprite(P_WIZARD_SPRITE+1);
+        } else {
+            move_metasprite_ex(wizard_metasprites[state.player.anim_frame], wizard_TILE_ORIGIN, 0, P_WIZARD_SPRITE, state.player.pos_x.h, state.player.dead_pos_y.h - 5);
+        }
+    }
 
     // Render player shield
     if(state.player.shield) {
@@ -59,11 +69,7 @@ void update_gfx(void) {
     }
 
     // Render UI
-    move_win(7, 136);
-    set_win_tiles(0, 0, 1, 1, heart_filled_map);
-    set_win_tiles(1, 0, 1, 1, heart_map);
-    set_win_tiles(2, 0, 1, 1, heart_map);
-
+    draw_health();
 
     // Render boss wizard
     move_metasprite_ex(carpet_metasprites[0], carpet_TILE_ORIGIN, 0, E_CARPET_SPRITE, state.boss.pos_x.h,  state.boss.pos_y.h);
@@ -73,4 +79,12 @@ void update_gfx(void) {
     scroll_bkg(0,-1);
 
     draw_projectiles();
+}
+
+void draw_health(void) {
+    move_win(7, 136);
+    for(uint8_t i = 0; i < PLAYER_MAX_HP; ++i) {
+        const uint8_t* map = (state.player.hp > i) ? heart_filled_map : heart_map;
+        set_win_tiles(i, 0, 1, 1, map);
+    }
 }

@@ -32,32 +32,37 @@ void update_game(void) {
     // J_START, J_SELECT, J_A, J_B, J_UP, J_DOWN, J_LEFT, J_RIGHT
     buttons = joypad();
     // Checking for input goes here ...
-    if((buttons & J_LEFT)) {
-        state.player.pos_x.w -= SPEED_SIDEWAYS;
-        if(state.player.pos_x.h < border_left) state.player.pos_x.h = border_left;
-    }
-    if((buttons & J_RIGHT)) {
-        state.player.pos_x.w += SPEED_SIDEWAYS;
-        if(state.player.pos_x.h > border_right) state.player.pos_x.h = border_right;
-    }
-    if((buttons & J_UP)) {
-        state.player.pos_y.w -= SPEED_UP;
-        if(state.player.pos_y.h < border_top) state.player.pos_y.h = border_top;
-    }
-    if((buttons & J_DOWN)) {
-        state.player.pos_y.w += SPEED_DOWN;
-        if(state.player.pos_y.h > border_bottom) state.player.pos_y.h = border_bottom;
-    }
-    // Shoot spell when holding A
-    if((buttons & J_A) && state.player.spell_cooldown == 0) {
-        // Do something on A pressed (once)
-        if(spawn_player_projectile()) {
-            state.player.spell_cooldown = PLAYER_SPELL_COOLDOWN;
-            sound_ch1_counter = shoot_sfx();
+    uint8_t alive = state.player.hp > 0;
+    if(alive) {
+        if((buttons & J_LEFT)) {
+            state.player.pos_x.w -= SPEED_SIDEWAYS;
+            if(state.player.pos_x.h < border_left) state.player.pos_x.h = border_left;
         }
+        if((buttons & J_RIGHT)) {
+            state.player.pos_x.w += SPEED_SIDEWAYS;
+            if(state.player.pos_x.h > border_right) state.player.pos_x.h = border_right;
+        }
+        if((buttons & J_UP)) {
+            state.player.pos_y.w -= SPEED_UP;
+            if(state.player.pos_y.h < border_top) state.player.pos_y.h = border_top;
+        }
+        if((buttons & J_DOWN)) {
+            state.player.pos_y.w += SPEED_DOWN;
+            if(state.player.pos_y.h > border_bottom) state.player.pos_y.h = border_bottom;
+        }
+        // Shoot spell when holding A
+        if((buttons & J_A) && state.player.spell_cooldown == 0) {
+            // Do something on A pressed (once)
+            if(spawn_player_projectile()) {
+                state.player.spell_cooldown = PLAYER_SPELL_COOLDOWN;
+                sound_ch1_counter = shoot_sfx();
+            }
+        }
+        // Activate shield when holding B
+        state.player.shield = (buttons & J_B);
+    } else if(state.player.dead_pos_y.h <= SPRITE_LAYER_OOB_Y) {
+        state.player.dead_pos_y.w += SPEED_DOWN;
     }
-    // Activate shield when holding B
-    state.player.shield = (buttons & J_B);
 
     buttons_prev = buttons;
 
@@ -129,6 +134,12 @@ void update_game(void) {
                 enemy_projectile_pool[i].alive = 0;
                 hide_sprite(enemy_projectile_pool[i].hw_sprite);
                 // TODO: Boss hits player logic
+                if(state.player.hp > 0) {
+                    state.player.hp--;
+                    if(state.player.hp == 0) {
+                        state.player.dead_pos_y = state.player.pos_y;
+                    }
+                }
             }
         }
     }
