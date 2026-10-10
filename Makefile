@@ -22,6 +22,10 @@ PROJECTNAME    = game
 BINS	    = $(PROJECTNAME).gb
 CSOURCES   := $(wildcard *.c)
 ASMSOURCES := $(wildcard *.s)
+ASSETSOURCES := $(wildcard assets/*.c assets/*.s)
+HEADERS := $(wildcard *.h assets/*.h)
+
+INCLUDES = -Iassets
 
 # hUGEDriver for Gameboy music
 HUGEDRIVER  = -IhUGEDriver/include -Wl-lhUGEDriver/gbdk/hUGEDriver.lib
@@ -33,8 +37,8 @@ compile.bat: Makefile
 	@make -sn | sed y/\\//\\\\/ | sed s/mkdir\ \-p/mkdir/ | grep -v make >> compile.bat
 
 # Compile and link all source files in a single call to LCC
-$(BINS):	$(CSOURCES) $(ASMSOURCES)
-	$(LCC) $(LCCFLAGS) -Wm-yC -o $@ $(CSOURCES) $(ASMSOURCES) $(HUGEDRIVER)
+$(BINS):	$(CSOURCES) $(ASMSOURCES) $(ASSETSOURCES) $(HEADERS)
+	$(LCC) $(LCCFLAGS) $(INCLUDES) -Wm-yC -o $@ $(CSOURCES) $(ASMSOURCES) $(ASSETSOURCES) $(HUGEDRIVER)
 
 clean:
 	rm -f *.o *.lst *.map *.gb *.ihx *.sym *.cdb *.adb *.asm *.noi *.rst
