@@ -6,7 +6,6 @@
 
 // HW Sprite indices (each 2 sprites big)
 // ======================================
-
 // The lowest indice has the highest priority in terms of what is drawn
 
 // Player sprites (2 wide)

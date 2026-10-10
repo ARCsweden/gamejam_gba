@@ -8,7 +8,7 @@
 #include <gbdk/platform.h>
 #include <gbdk/metasprites.h>
 
-#define sand_TILE_ORIGIN 0
+#define sand_TILE_ORIGIN 1
 #define sand_TILE_W 8
 #define sand_TILE_H 8
 #define sand_WIDTH 8

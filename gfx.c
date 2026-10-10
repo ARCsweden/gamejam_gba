@@ -13,7 +13,7 @@
 #include "assets/sand.h"
 
 const uint8_t bg_tile = 0;
-const uint8_t bg_tile_row[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+const uint8_t bg_tile_row[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
 const uint8_t bg_attr_row[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
 const uint8_t bg_attr = 1;
 
@@ -22,9 +22,11 @@ void init_gfx(void) {
     SPRITES_8x16;
 
     init_player_gfx();
+    init_ui_gfx();
+
 
     // Initialize tiles (note sprite and bkg tiles 128-255 overlap)
-    set_bkg_data(0, 1, sand_tiles);
+    set_bkg_data(sand_TILE_ORIGIN, 1, sand_tiles);
     set_bkg_palette(S_PAL(1), 1, sand_palettes);
 
     for(int i = 0; i < 32; i++) {
@@ -38,7 +40,7 @@ void init_gfx(void) {
     SHOW_BKG;
     SHOW_SPRITES;
     enable_interrupts();
-    //SHOW_WIN;
+    SHOW_WIN;
     DISPLAY_ON;
 }
 
@@ -46,6 +48,12 @@ void update_gfx(void) {
     // Render player wizard
     move_metasprite_ex(carpet_metasprites[0], carpet_TILE_ORIGIN, 0, P_CARPET_SPRITE, state.player.pos_x.h,  state.player.pos_y.h);
     move_metasprite_ex(wizard_metasprites[0], wizard_TILE_ORIGIN, 0, P_WIZARD_SPRITE, state.player.pos_x.h,  state.player.pos_y.h - 3);
+
+    // Render UI
+    //WY_REG = 136;
+    //WX_REG = 7;
+    move_win(7, 136);
+    set_win_tiles(0, 0, 1, 1, heart_map);
 
     // Scroll background
     scroll_bkg(0,-1);

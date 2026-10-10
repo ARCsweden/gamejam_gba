@@ -10,3 +10,7 @@ void init_player_gfx(void) {
     set_sprite_data(p_spell_TILE_ORIGIN, p_spell_TILE_COUNT, p_spell_tiles);
     set_sprite_palette(S_PAL(2), 1, p_spell_palettes);
 }
+
+void init_ui_gfx(void) {
+    set_win_data(heart_TILE_ORIGIN, heart_TILE_COUNT, heart_tiles);
+}
