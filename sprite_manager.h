@@ -6,7 +6,6 @@
 
 // HW Sprite indices (each 2 sprites big)
 // ======================================
-
 // The lowest indice has the highest priority in terms of what is drawn
 
 // Player sprites (2 wide)
@@ -68,7 +67,9 @@ extern struct projectile_t player_projectile_pool[NUM_PLAYER_SPELLS];
 
 void init_sprite_manager(void);
 
-uint8_t spawn_player_projectile(uint8_t pos_x, uint8_t pos_y);
+uint8_t spawn_player_projectile(void);
+// TODO: Prototype
+uint8_t spawn_enemy_projectile(uint8_t pos_x, uint8_t pos_y, uint8_t dir, fixed vel_x, fixed vel_y);
 void update_projectiles(void);
 void draw_projectiles(void);
 

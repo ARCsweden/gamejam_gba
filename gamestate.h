@@ -13,8 +13,10 @@
 #define SPEED_DOWN TO_FIXED(2, 85)
 
 #define PLAYER_SPELL_SPEED TO_FIXED(4, 0);
-
 #define PLAYER_SPELL_COOLDOWN 10
+
+#define BOSS_SPELL_SPEED TO_FIXED(2, 0);
+#define BOSS_SPELL_COOLDOWN 5
 
 struct gamestate_t {
     struct player_t player;

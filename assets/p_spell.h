@@ -8,7 +8,7 @@
 #include <gbdk/platform.h>
 #include <gbdk/metasprites.h>
 
-#define p_spell_TILE_ORIGIN 4
+#define p_spell_TILE_ORIGIN 16
 #define p_spell_TILE_W 8
 #define p_spell_TILE_H 16
 #define p_spell_WIDTH 8
@@ -21,11 +21,12 @@
 #define p_spell_PIVOT_Y 8
 #define p_spell_PIVOT_W 8
 #define p_spell_PIVOT_H 16
-extern const metasprite_t* const p_spell_metasprites[1];
+extern const metasprite_t* const p_spell_metasprites[2];
 
 BANKREF_EXTERN(p_spell)
 
 extern const palette_color_t p_spell_palettes[4];
+extern const palette_color_t e_spell_palettes[4];
 extern const uint8_t p_spell_tiles[32];
 
 #endif
