@@ -5,7 +5,7 @@
 #include <gb/gb.h>
 
 #define MAX_INST 16
-#define BOSS_MAXHP 4 
+#define BOSS_MAXHP 10 
 
 typedef enum ins_type {
     WAIT = 0,
