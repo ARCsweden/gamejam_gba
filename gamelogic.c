@@ -5,6 +5,7 @@
 #include "gamestate.h"
 #include "sprite_manager.h"
 #include "collision.h"
+#include "gfx.h"
 
 // Include audio
 #include "audio.h"
@@ -127,6 +128,7 @@ void update_game(void) {
             if(check_collision(boss_bb, spell_bb)) {
                 player_projectile_pool[i].alive = 0;
                 hide_sprite(player_projectile_pool[i].hw_sprite);
+                state.boss.hit = 1;
 
                 if(state.boss.hp > 0) {
                     state.boss.hp--;
@@ -146,6 +148,7 @@ void update_game(void) {
             if(check_collision(player_bb, spell_bb)) {
                 enemy_projectile_pool[i].alive = 0;
                 hide_sprite(enemy_projectile_pool[i].hw_sprite);
+                state.player.hit = 1;
                 // TODO: Boss hits player logic
                 if(state.player.hp > 0) {
                     state.player.hp--;

@@ -88,6 +88,10 @@ void update_gfx(void) {
     scroll_bkg(0,-1);
 
     draw_projectiles();
+
+    // spawn and remove hitsplat
+    gfx_hitsplat_enemy();
+    gfx_hitsplat_player();
 }
 
 void draw_health(void) {
@@ -96,4 +100,36 @@ void draw_health(void) {
         const uint8_t* map = (state.player.hp > i) ? heart_filled_map : heart_map;
         set_win_tiles(i, 0, 1, 1, map);
     }
+}
+
+void gfx_hitsplat_player(void) {
+    //if hit spawn hitsplat and set hitsplat timer
+    if (state.player.hit == 1) {
+        state.player.hit = 20;
+        move_metasprite_ex(hitsplat_metasprites[1], hitsplat_TILE_ORIGIN, 0, P_HITSPLAT_SPRITE, state.player.pos_x.h, state.player.pos_y.h - 4);
+    }    
+    else if (state.player.hit == 2) {
+        hide_sprite(P_HITSPLAT_SPRITE);
+        hide_sprite(P_HITSPLAT_SPRITE+1);
+    }
+    //decrement "timer"
+    else {
+        state.player.hit--;
+    } 
+}
+
+void gfx_hitsplat_enemy(void) {
+    //if hit spawn hitsplat and set hitsplat timer
+    if (state.boss.hit == 1) {
+        state.boss.hit = 20;
+        move_metasprite_ex(hitsplat_metasprites[0], hitsplat_TILE_ORIGIN, 0, E_HITSPLAT_SPRITE, state.boss.pos_x.h, state.boss.pos_y.h - 4);
+    }    
+    else if (state.boss.hit == 2) {
+        hide_sprite(E_HITSPLAT_SPRITE);
+        hide_sprite(E_HITSPLAT_SPRITE+1);
+    }
+    //decrement "timer"
+    else {
+        state.boss.hit--;
+    } 
 }

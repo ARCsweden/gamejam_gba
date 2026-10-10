@@ -20,14 +20,13 @@ const uint8_t hitsplat_tiles[128] = {
 	};
 
 const metasprite_t hitsplat_metasprite0[] = {
-	METASPR_ITEM(-8, -8, 0, S_PAL(0)),
-	METASPR_ITEM(0, 8, 2, S_PAL(0)),
+	METASPR_ITEM(-8, -8, 0, S_PAL(2)),
+	METASPR_ITEM(0, 8, 0, S_PAL(2)),
 	METASPR_TERM
 };
 
 const metasprite_t hitsplat_metasprite1[] = {
-	METASPR_ITEM(-8, -8, 4, S_PAL(0)),
-	METASPR_ITEM(0, 8, 6, S_PAL(0)),
+	METASPR_ITEM(-8, -4, 0, S_PAL(3) | S_FLIPY),
 	METASPR_TERM
 };
 
