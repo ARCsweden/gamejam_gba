@@ -11,7 +11,7 @@ uint8_t buttons_prev = 0;
 
 const uint8_t border_left = SPRITE_LAYER_ORIG_X + 8;
 const uint8_t border_right = SPRITE_LAYER_SCREEN_LIM_X - 8;
-const uint8_t border_bottom = SPRITE_LAYER_SCREEN_LIM_Y - 8;
+const uint8_t border_bottom = SPRITE_LAYER_SCREEN_LIM_Y - 16;
 const uint8_t border_top = SPRITE_LAYER_ORIG_Y + 72;
 
 uint8_t frame = 0;

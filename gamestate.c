@@ -5,7 +5,7 @@
 struct gamestate_t state;
 
 // Pixels from bottom
-#define PLAYER_START_Y 16
+#define PLAYER_START_Y 24
 
 void init_gamestate(void) {
     // Spawn player at the bottom center of the screen
