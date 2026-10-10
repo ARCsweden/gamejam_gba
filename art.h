@@ -7,13 +7,14 @@
 #include "assets/boss.h"
 
 #include "assets/heart.h"
+#include "assets/heart_filled.h"
 
 
 // SPRITE PALETTES:
 // 0: Carpet
 // 1: Wizard(player)
 // 2: Spell(player)
-// 3:
+// 3: Spell(enemy)
 // 4: Boss
 // 5:
 // 6:
