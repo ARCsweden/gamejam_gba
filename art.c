@@ -14,6 +14,7 @@ void init_player_gfx(void) {
     set_sprite_palette(S_PAL(4), 1, boss_palettes);
     // Only load tiles for shield, shares S_PAL(2) with player spell
     set_sprite_data(shield_TILE_ORIGIN, shield_TILE_COUNT, shield_tiles);
+    set_sprite_data(hitsplat_TILE_ORIGIN, hitsplat_TILE_COUNT, hitsplat_tiles);
 }
 
 void init_ui_gfx(void) {

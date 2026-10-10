@@ -6,6 +6,7 @@
 #include "assets/p_spell.h"
 #include "assets/boss.h"
 #include "assets/shield.h"
+#include "assets/hitsplat.h"
 
 #include "assets/heart.h"
 #include "assets/heart_filled.h"
@@ -16,13 +17,15 @@
 // 16: Player spell (2 tiles)
 // 18: Boss (12 tiles)
 // 30: Shield (2 tiles)
-// 32: ?
+// 32: Heart (1 tiles)
+// 33: Hitsplat (12 tiles)
+// 45: ??
 
 
 // SPRITE PALETTES:
 // 0: Carpet
 // 1: Wizard(player)
-// 2: Spell(player) + shield
+// 2: Spell(player) + shield + Hitsplat
 // 3: Spell(enemy)
 // 4: Boss
 // 5:
@@ -32,7 +35,7 @@
 
 // BKG PALETTES:
 // 0:
-// 1:
+// 1: Sand
 // 2:
 // 3:
 // 4:
