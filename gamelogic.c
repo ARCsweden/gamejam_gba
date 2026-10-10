@@ -45,6 +45,8 @@ void update_game(void) {
     }
     buttons_prev = buttons;
 
+    update_boss_logic();
+
     // Frame timer dependent animation
     if(state.player.spell_cooldown > 0) state.player.spell_cooldown--;
 
