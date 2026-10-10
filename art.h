@@ -13,7 +13,7 @@
 // 0: Carpet
 // 1: Wizard(player)
 // 2: Spell(player)
-// 3:
+// 3: Spell(enemy)
 // 4:
 // 5:
 // 6:

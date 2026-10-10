@@ -11,6 +11,10 @@ const palette_color_t p_spell_palettes[4] = {
 	RGB8(  0,  0,  0), RGB8(  0,183,255), RGB8(  0,128,179), RGB8(  0,  0,  0)
 	};
 
+const palette_color_t e_spell_palettes[4] = {
+	RGB8(  0,  0,  0), RGB8(  255,50,50), RGB8(  180,20,0), RGB8(  0,  0,  0)
+	};
+
 const uint8_t p_spell_tiles[32] = {
 	0x00,0x00,0x00,0x00,0x00,0x00,0x18,0x00,0x3c,0x00,0x24,0x18,0x3c,0x00,0x18,0x24,
 	0x18,0x00,0x18,0x00,0x18,0x00,0x00,0x18,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
@@ -21,6 +25,12 @@ const metasprite_t p_spell_metasprite0[] = {
 	METASPR_TERM
 };
 
-const metasprite_t* const p_spell_metasprites[1] = {
-	p_spell_metasprite0
+const metasprite_t p_spell_metasprite1[] = {
+	METASPR_ITEM(-8, -4, 0, S_PAL(3) | S_FLIPY),
+	METASPR_TERM
+};
+
+const metasprite_t* const p_spell_metasprites[2] = {
+	p_spell_metasprite0,
+	p_spell_metasprite1
 };
