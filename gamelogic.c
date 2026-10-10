@@ -15,16 +15,16 @@ void update_game(void) {
     buttons = joypad();
     // Checking for input goes here ...
     if((buttons & J_LEFT)) {
-        state.player.pos_x.w -= SPEED;
+        state.player.pos_x.w -= SPEED_SIDEWAYS;
     }
     if((buttons & J_RIGHT)) {
-        state.player.pos_x.w += SPEED;
+        state.player.pos_x.w += SPEED_SIDEWAYS;
     }
     if((buttons & J_UP)) {
-        state.player.pos_y.w -= SPEED;
+        state.player.pos_y.w -= SPEED_UP;
     }
     if((buttons & J_DOWN)) {
-        state.player.pos_y.w += SPEED;
+        state.player.pos_y.w += SPEED_DOWN;
     }
     if((buttons & J_A) && (~buttons_prev & J_A)) {
         // Do something on A pressed (once)
