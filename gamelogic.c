@@ -48,6 +48,7 @@ void update_game(void) {
         state.player.pos_y.w += SPEED_DOWN;
         if(state.player.pos_y.h > border_bottom) state.player.pos_y.h = border_bottom;
     }
+    // Shoot spell when holding A
     if((buttons & J_A) && state.player.spell_cooldown == 0) {
         // Do something on A pressed (once)
         if(spawn_player_projectile()) {
@@ -55,6 +56,8 @@ void update_game(void) {
             sound_ch1_counter = shoot_sfx();
         }
     }
+    // Activate shield when holding B
+    state.player.shield = (buttons & J_B);
 
     buttons_prev = buttons;
 

@@ -48,10 +48,16 @@ void init_gfx(void) {
 void update_gfx(void) {
     // Render player wizard
     move_metasprite_ex(carpet_metasprites[0], carpet_TILE_ORIGIN, 0, P_CARPET_SPRITE, state.player.pos_x.h,  state.player.pos_y.h);
+    move_metasprite_ex(wizard_metasprites[state.player.anim_frame], wizard_TILE_ORIGIN, 0, P_WIZARD_SPRITE, state.player.pos_x.h, state.player.pos_y.h - 5);
 
+    // Render player shield
+    if(state.player.shield) {
+        move_metasprite_ex(shield_metasprites[0], shield_TILE_ORIGIN, 0, P_SHIELD_SPRITE, state.player.pos_x.h, state.player.pos_y.h - 16);
+    } else {
+        hide_sprite(P_SHIELD_SPRITE);
+        hide_sprite(P_SHIELD_SPRITE + 1);
+    }
 
-    move_metasprite_ex(wizard_metasprites[state.player.anim_frame], wizard_TILE_ORIGIN, 0, P_WIZARD_SPRITE, state.player.pos_x.h,  state.player.pos_y.h - 5);
-    
     // Render UI
     move_win(7, 136);
     set_win_tiles(0, 0, 1, 1, heart_filled_map);

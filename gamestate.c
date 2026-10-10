@@ -25,4 +25,5 @@ void init_gamestate(void) {
 
     state.player.spell_cooldown = 0;
     state.player.anim_frame = 0;
+    state.player.shield = 0;
 }
