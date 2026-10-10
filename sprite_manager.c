@@ -4,8 +4,8 @@
 // TODO: Stuff for cleaning up sprites when they go out of range
 
 
-struct projectile enemy_projectile_pool[NUM_SMALL_E_SPELLS];
-struct projectile player_projectile_pool[NUM_PLAYER_SPELLS];
+struct projectile_t enemy_projectile_pool[NUM_SMALL_E_SPELLS];
+struct projectile_t player_projectile_pool[NUM_PLAYER_SPELLS];
 
 void init_sprite_manager(void) {
     for(uint8_t i = 0; i < NUM_PLAYER_SPELLS; ++i) {

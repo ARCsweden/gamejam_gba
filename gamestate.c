@@ -1,9 +1,17 @@
 #include "gamestate.h"
 
+#include "sprite_manager.h"
+
 struct gamestate_t state;
 
+// Pixels from bottom
+#define PLAYER_START_Y 16
+
 void init_gamestate(void) {
-    state.oak_x.w = TO_FIXED(80, 0);
-    state.oak_y.w = TO_FIXED(80, 0);
-    state.letters_tile = 0;
+    // Spawn player at the bottom center of the screen
+    const uint8_t player_start_x = SPRITE_LAYER_ORIG_X + (SPRITE_LAYER_SCREEN_LIM_X - SPRITE_LAYER_ORIG_X) / 2;
+    const uint8_t player_start_y = (SPRITE_LAYER_SCREEN_LIM_Y - PLAYER_START_Y);
+
+    state.player.pos_x.w = TO_FIXED(player_start_x, 0);
+    state.player.pos_y.w = TO_FIXED(player_start_y, 0);
 }

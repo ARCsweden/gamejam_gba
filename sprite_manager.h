@@ -45,7 +45,7 @@
 #define SPRITE_LAYER_OOB_X (SPRITE_LAYER_SCREEN_LIM_X + 16)
 #define SPRITE_LAYER_OOB_Y (SPRITE_LAYER_SCREEN_LIM_Y + 16)
 
-struct projectile {
+struct projectile_t {
     uint8_t pos_x;
     uint8_t pos_y;
     // Collision, centered around pos_x
@@ -58,8 +58,8 @@ struct projectile {
     uint8_t metasprite;
 };
 
-extern struct projectile enemy_projectile_pool[NUM_SMALL_E_SPELLS];
-extern struct projectile player_projectile_pool[NUM_PLAYER_SPELLS];
+extern struct projectile_t enemy_projectile_pool[NUM_SMALL_E_SPELLS];
+extern struct projectile_t player_projectile_pool[NUM_PLAYER_SPELLS];
 
 
 // TODO: Effects etc.
