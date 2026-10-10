@@ -55,7 +55,7 @@ void update_game(void) {
             sound_ch1_counter = shoot_sfx();
         }
     }
-  
+
     buttons_prev = buttons;
 
     update_boss_logic();

@@ -9,8 +9,8 @@
 #define TO_FIXED(i, f) (((i) << 8) | (f))
 
 #define SPEED_SIDEWAYS TO_FIXED(1, 0)
-#define SPEED_UP TO_FIXED(0, 85)
-#define SPEED_DOWN TO_FIXED(2, 85)
+#define SPEED_UP TO_FIXED(0, 160)
+#define SPEED_DOWN TO_FIXED(1, 85)
 
 #define PLAYER_SPELL_SPEED TO_FIXED(4, 0);
 #define PLAYER_SPELL_COOLDOWN 10
