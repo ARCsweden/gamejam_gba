@@ -14,4 +14,5 @@ void init_gamestate(void) {
 
     state.player.pos_x.w = TO_FIXED(player_start_x, 0);
     state.player.pos_y.w = TO_FIXED(player_start_y, 0);
+    state.player.spell_cooldown = 0;
 }
