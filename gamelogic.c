@@ -5,6 +5,14 @@
 #include "gamestate.h"
 #include "sprite_manager.h"
 
+// Include audio
+#include "audio.h"
+
+// Audio vars
+uint8_t sound_cnt = 0;
+uint8_t sound_frames = 10;
+
+
 // Holding buttons pressed
 uint8_t buttons = 0;
 uint8_t buttons_prev = 0;
@@ -41,7 +49,18 @@ void update_game(void) {
         // Do something on A pressed (once)
         if(spawn_player_projectile(state.player.pos_x.h, state.player.pos_y.h - 8)) {
             state.player.spell_cooldown = PLAYER_SPELL_COOLDOWN;
+            // Sound!
+            hUGE_mute_channel(HT_CH1,HT_CH_MUTE);
+            sound_cnt = sound_frames;
+            NR10_REG=0X00;
+            NR11_REG=0X81;
+            NR12_REG=0X43;
+            NR13_REG=0X73;
+            NR14_REG=0X86;
+            
         }
+
+        
     }
     buttons_prev = buttons;
 
@@ -49,6 +68,13 @@ void update_game(void) {
 
     // Frame timer dependent animation
     if(state.player.spell_cooldown > 0) state.player.spell_cooldown--;
+
+    if(sound_cnt > 0) {
+        sound_cnt--;
+        if(sound_cnt == 0) {
+            hUGE_mute_channel(HT_CH1,HT_CH_PLAY);
+        }
+    }
 
     frame++;
     if(frame >= 10) {
