@@ -37,19 +37,25 @@ void update_game(void) {
         state.player.pos_y.w += SPEED_DOWN;
         if(state.player.pos_y.h > border_bottom) state.player.pos_y.h = border_bottom;
     }
-    if((buttons & J_A) && (~buttons_prev & J_A)) {
+    if((buttons & J_A) && state.player.spell_cooldown == 0) {
         // Do something on A pressed (once)
+        if(spawn_player_projectile(state.player.pos_x.h, state.player.pos_y.h - 8)) {
+            state.player.spell_cooldown = PLAYER_SPELL_COOLDOWN;
+        }
     }
     buttons_prev = buttons;
 
     update_boss_logic();
 
     // Frame timer dependent animation
+    if(state.player.spell_cooldown > 0) state.player.spell_cooldown--;
+
     frame++;
     if(frame >= 60) {
         frame = 0;
         //state.letters_tile++;
         //if(state.letters_tile >= 4) state.letters_tile = 0;
     }
+    update_projectiles();
 }
 
