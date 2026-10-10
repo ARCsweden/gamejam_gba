@@ -20,37 +20,37 @@ void init_sprite_manager(void) {
     }
 }
 
-void update_projectiles(void) {
-    for(uint8_t i = 0; i < NUM_PLAYER_SPELLS; ++i) {
-        if(player_projectile_pool[i].alive) {
+void _update_projectiles(struct projectile_t* pool, uint8_t pool_size) {
+    for(uint8_t i = 0; i < pool_size; ++i) {
+        if(pool[i].alive) {
             // Move in X
-            if(player_projectile_pool[i].dir & 0x1) {
-                player_projectile_pool[i].pos_x.w -= player_projectile_pool[i].vel_x.w;
+            if(pool[i].dir & 0x1) {
+                pool[i].pos_x.w -= pool[i].vel_x.w;
             } else {
-                player_projectile_pool[i].pos_x.w += player_projectile_pool[i].vel_x.w;
+                pool[i].pos_x.w += pool[i].vel_x.w;
             }
             // Move in Y
-            if(player_projectile_pool[i].dir & 0x2) {
-                player_projectile_pool[i].pos_y.w -= player_projectile_pool[i].vel_y.w;
+            if(pool[i].dir & 0x2) {
+                pool[i].pos_y.w -= pool[i].vel_y.w;
             } else {
-                player_projectile_pool[i].pos_y.w += player_projectile_pool[i].vel_y.w;
+                pool[i].pos_y.w += pool[i].vel_y.w;
             }
 
             // Check OOB
             if(
-                player_projectile_pool[i].pos_x.h > SPRITE_LAYER_OOB_X ||
-                player_projectile_pool[i].pos_y.h > SPRITE_LAYER_OOB_Y
+                pool[i].pos_x.h > SPRITE_LAYER_OOB_X ||
+                pool[i].pos_y.h > SPRITE_LAYER_OOB_Y
             ) {
-                player_projectile_pool[i].alive = 0;
-                hide_sprite(player_projectile_pool[i].hw_sprite);
+                pool[i].alive = 0;
+                hide_sprite(pool[i].hw_sprite);
             }
         }
     }
-    for(uint8_t i = 0; i < NUM_SMALL_E_SPELLS; ++i) {
-        if(enemy_projectile_pool[i].alive) {
-            // TODO:
-        }
-    }
+}
+
+void update_projectiles(void) {
+    _update_projectiles(player_projectile_pool, NUM_PLAYER_SPELLS);
+    _update_projectiles(enemy_projectile_pool, NUM_SMALL_E_SPELLS);
 }
 
 uint8_t spawn_player_projectile(uint8_t pos_x, uint8_t pos_y) {
