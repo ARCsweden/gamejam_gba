@@ -39,7 +39,7 @@ void update_game(void) {
     }
     if((buttons & J_A) && state.player.spell_cooldown == 0) {
         // Do something on A pressed (once)
-        if(spawn_player_projectile(state.player.pos_x.h, state.player.pos_y.h - 8)) {
+        if(spawn_player_projectile()) {
             state.player.spell_cooldown = PLAYER_SPELL_COOLDOWN;
         }
     }
