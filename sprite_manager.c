@@ -53,16 +53,16 @@ void update_projectiles(void) {
     _update_projectiles(enemy_projectile_pool, NUM_SMALL_E_SPELLS);
 }
 
-uint8_t _spawn_projectile(struct projectile_t* pool, uint8_t pos_x, uint8_t pos_y, uint8_t dir, fixed vel_x, fixed vel_y, uint8_t col_w, uint8_t col_h) {
-    for(uint8_t i = 0; i < NUM_PLAYER_SPELLS; ++i) {
+uint8_t _spawn_projectile(struct projectile_t* pool, uint8_t pool_size, uint8_t pos_x, uint8_t pos_y, uint8_t dir, fixed vel_x, fixed vel_y, uint8_t col_w, uint8_t col_h) {
+    for(uint8_t i = 0; i < pool_size; ++i) {
         if(pool[i].alive) continue;
         // This projectile is dead, reuse it
         pool[i].alive = 1;
         pool[i].pos_x.w = TO_FIXED(pos_x, 0);
         pool[i].pos_y.w = TO_FIXED(pos_y, 0);
         pool[i].dir = dir;
-        pool[i].vel_x.w = vel_x.h;
-        pool[i].vel_y.w = vel_y.h;
+        pool[i].vel_x = vel_x;
+        pool[i].vel_y = vel_y;
         pool[i].w = col_w;
         pool[i].h = col_h;
         return 1;
@@ -78,6 +78,7 @@ uint8_t spawn_player_projectile(void) {
     speed_y.w = PLAYER_SPELL_SPEED;
     return _spawn_projectile(
         player_projectile_pool,
+        NUM_PLAYER_SPELLS,
         state.player.pos_x.h,
         state.player.pos_y.h - 8,
         0x2, // Forward dir
@@ -92,6 +93,7 @@ uint8_t spawn_player_projectile(void) {
 uint8_t spawn_enemy_projectile(uint8_t pos_x, uint8_t pos_y, uint8_t dir, fixed vel_x, fixed vel_y) {
     return _spawn_projectile(
         enemy_projectile_pool,
+        NUM_SMALL_E_SPELLS,
         pos_x,
         pos_y,
         dir,
