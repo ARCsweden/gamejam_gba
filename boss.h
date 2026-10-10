@@ -19,16 +19,17 @@ typedef struct instruction {
     ins_type type;
     int8_t direction;
     uint16_t duration;
-    fixed speed; 
+    fixed speed;
 } Instruction;
 
 typedef struct boss_t {
     fixed pos_x;
     fixed pos_y;
+    fixed dead_pos_y;
     fixed vel_y;
     uint8_t dir;
     uint8_t spell_cooldown;
-    uint8_t health;
+    uint8_t hp;
 }boss_t;
 
 void init_boss_logic(void);

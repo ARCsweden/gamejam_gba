@@ -66,8 +66,14 @@ void update_game(void) {
 
     buttons_prev = buttons;
 
-    update_boss_wave();
-    update_boss_logic();
+    if(state.boss.hp > 0) {
+        update_boss_wave();
+        update_boss_logic();
+    } else {
+        if(state.boss.dead_pos_y.h <= SPRITE_LAYER_OOB_Y) {
+            state.boss.dead_pos_y.w += SPEED_DOWN;
+        }
+    }
 
     // Frame timer dependent animation
     if(state.player.spell_cooldown > 0) state.player.spell_cooldown--;
@@ -121,12 +127,14 @@ void update_game(void) {
             if(check_collision(boss_bb, spell_bb)) {
                 player_projectile_pool[i].alive = 0;
                 hide_sprite(player_projectile_pool[i].hw_sprite);
-                
-                if (state.boss.health == 0) {
-                    // TODO: play vfx and remove boss wizard
-                }
-                else state.boss.health--;
 
+                if(state.boss.hp > 0) {
+                    state.boss.hp--;
+                    if (state.boss.hp == 0) {
+                        // TODO: play vfx and remove boss wizard
+                        state.boss.dead_pos_y = state.boss.pos_y;
+                    }
+                }
             }
         }
     }

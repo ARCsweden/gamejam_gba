@@ -73,10 +73,16 @@ void update_gfx(void) {
 
     // Render boss wizard
     move_metasprite_ex(carpet_metasprites[0], carpet_TILE_ORIGIN, 0, E_CARPET_SPRITE, state.boss.pos_x.h,  state.boss.pos_y.h);
-    if (state.boss.health == 0) { 
-        move_metasprite_ex(boss_metasprites[state.player.anim_frame], boss_TILE_ORIGIN, 0, E_WIZARD_SPRITE, state.boss.pos_x.h,  0);
+    if (state.boss.hp > 0) {
+        move_metasprite_ex(boss_metasprites[state.player.anim_frame], boss_TILE_ORIGIN, 0, E_WIZARD_SPRITE, state.boss.pos_x.h, state.boss.pos_y.h - 5);
+    } else { // Dead
+        if(state.player.dead_pos_y.h > SPRITE_LAYER_OOB_Y) {
+            hide_sprite(E_WIZARD_SPRITE);
+            hide_sprite(E_WIZARD_SPRITE+1);
+        } else {
+            move_metasprite_ex(boss_metasprites[0], boss_TILE_ORIGIN, 0, E_WIZARD_SPRITE, state.boss.pos_x.h, state.boss.dead_pos_y.h - 5);
+        }
     }
-    else move_metasprite_ex(boss_metasprites[state.player.anim_frame], boss_TILE_ORIGIN, 0, E_WIZARD_SPRITE, state.boss.pos_x.h,  state.boss.pos_y.h - 5);
 
     // Scroll background
     scroll_bkg(0,-1);
