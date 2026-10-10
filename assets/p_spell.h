@@ -8,7 +8,7 @@
 #include <gbdk/platform.h>
 #include <gbdk/metasprites.h>
 
-#define p_spell_TILE_ORIGIN 4
+#define p_spell_TILE_ORIGIN 14
 #define p_spell_TILE_W 8
 #define p_spell_TILE_H 16
 #define p_spell_WIDTH 8
