@@ -18,6 +18,16 @@
 #define BOSS_SPELL_SPEED TO_FIXED(2, 0);
 #define BOSS_SPELL_COOLDOWN 5
 
+// Pixels from bottom
+#define PLAYER_START_Y 24
+
+// Boss wave motion
+#define BOSS_CENTER_Y 32 // Pixels from top
+#define BOSS_ACC_Y 8 // Note, fixed fractional
+#define BOSS_PEAK_Y_SPEED 1 // Note, fixed integer
+
+#define PLAYER_MAX_HP 5
+
 struct gamestate_t {
     struct player_t player;
     struct boss_t boss;

@@ -66,7 +66,9 @@ void update_boss_logic(void) {
     fixed speed_y;
     speed_x.w = TO_FIXED(0,0);
     speed_y.w = BOSS_SPELL_SPEED;
-    
+    if(state.boss.hp == 0){
+        return;
+    }
     switch (instruction_list[active_ins_index]->type) {
         case WAIT:
             break;
@@ -129,4 +131,24 @@ void load_template(Instruction* template[]){
     instruction_list[append_ins_index] = &new_inst;
     append_ins_index = (append_ins_index + 1)%MAX_INST;
 
+}
+
+void update_boss_wave(void) {
+    if(state.boss.dir & 0x2) {
+        state.boss.vel_y.w += TO_FIXED(0, BOSS_ACC_Y);
+        if(state.boss.vel_y.h == BOSS_PEAK_Y_SPEED) {
+            state.boss.dir &= ~0x2;
+        }
+    } else {
+        state.boss.vel_y.w -= TO_FIXED(0, BOSS_ACC_Y);
+        if(state.boss.vel_y.w == 0) {
+            state.boss.dir = ~state.boss.dir;
+        }
+    }
+
+    if(state.boss.dir & 0x1) {
+        state.boss.pos_y.w -= state.boss.vel_y.w;
+    } else {
+        state.boss.pos_y.w += state.boss.vel_y.w;
+    }
 }
