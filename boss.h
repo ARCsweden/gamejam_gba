@@ -24,6 +24,8 @@ typedef struct instruction {
 typedef struct boss_t {
     fixed pos_x;
     fixed pos_y;
+    fixed vel_y;
+    uint8_t dir;
     uint8_t spell_cooldown;
 }boss_t;
 
@@ -31,5 +33,6 @@ void init_boss_logic(void);
 
 void update_boss_logic(void);
 
+void update_boss_wave(void);
 
 #endif
