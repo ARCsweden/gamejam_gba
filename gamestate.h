@@ -4,14 +4,15 @@
 #include <stdint.h>
 #include <gb/gb.h>
 
+#include "player.h"
+
 #define TO_FIXED(i, f) (((i) << 8) | (f))
 
 #define SPEED TO_FIXED(1, 0)
 
+
 struct gamestate_t {
-    fixed oak_x;
-    fixed oak_y;
-    uint8_t letters_tile;
+    struct player_t player;
 };
 
 extern struct gamestate_t state;
