@@ -17,8 +17,8 @@ typedef enum ins_type {
 typedef struct instruction {
     ins_type type;
     int8_t direction;
-    fixed speed; 
     uint16_t duration;
+    fixed speed; 
 } Instruction;
 
 typedef struct boss_t {
