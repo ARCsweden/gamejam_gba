@@ -1,6 +1,7 @@
 #include "gfx.h"
 
 #include "gamestate.h"
+#include "sprite_manager.h"
 
 /*
 #include "letters.h"
@@ -62,6 +63,8 @@ void init_gfx(void) {
     // Set the attributes layer in VRAM
     set_bkg_submap_attributes(0, 0, 32, 32, map_map_attributes, map_MAP_ATTRIBUTES_WIDTH);
     */
+
+    init_sprite_manager();
 
     // Activating layers
     SHOW_BKG;
