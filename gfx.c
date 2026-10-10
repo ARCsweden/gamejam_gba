@@ -47,17 +47,18 @@ void init_gfx(void) {
 void update_gfx(void) {
     // Render player wizard
     move_metasprite_ex(carpet_metasprites[0], carpet_TILE_ORIGIN, 0, P_CARPET_SPRITE, state.player.pos_x.h,  state.player.pos_y.h);
-    move_metasprite_ex(wizard_metasprites[0], wizard_TILE_ORIGIN, 0, P_WIZARD_SPRITE, state.player.pos_x.h,  state.player.pos_y.h - 3);
 
-    // Render UI
+    move_metasprite_ex(wizard_metasprites[state.player.anim_frame], wizard_TILE_ORIGIN, 0, P_WIZARD_SPRITE, state.player.pos_x.h,  state.player.pos_y.h - 5);
+// Render UI
     //WY_REG = 136;
     //WX_REG = 7;
     move_win(7, 136);
     set_win_tiles(0, 0, 1, 1, heart_map);
 
+
     // Render boss wizard
     move_metasprite_ex(carpet_metasprites[0], carpet_TILE_ORIGIN, 0, E_CARPET_SPRITE, state.boss.pos_x.h,  state.boss.pos_y.h);
-    move_metasprite_ex(wizard_metasprites[0], wizard_TILE_ORIGIN, 0, E_WIZARD_SPRITE, state.boss.pos_x.h,  state.boss.pos_y.h + 3);
+    move_metasprite_ex(wizard_metasprites[0], wizard_TILE_ORIGIN, 0, E_WIZARD_SPRITE, state.boss.pos_x.h,  state.boss.pos_y.h - 5);
     
     
     // Scroll background

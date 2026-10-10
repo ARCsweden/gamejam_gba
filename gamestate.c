@@ -23,4 +23,5 @@ void init_gamestate(void) {
     state.boss.pos_y.w = TO_FIXED(boss_start_y, 0);
   
     state.player.spell_cooldown = 0;
+    state.player.anim_frame = 0;
 }
