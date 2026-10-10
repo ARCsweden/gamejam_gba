@@ -8,7 +8,7 @@ extern const hUGESong_t music;
 
 void init_audio(void);
 
-uint8_t shoot_sfx();
+uint8_t shoot_sfx(void);
 
 void play_song(hUGESong_t* track);
 

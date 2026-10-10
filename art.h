@@ -9,6 +9,7 @@
 
 #include "assets/heart.h"
 #include "assets/heart_filled.h"
+#include "assets/Font.h"
 
 // SPRITE TILES:
 // 0: Carpet (4 tiles)
@@ -17,6 +18,8 @@
 // 18: Boss (12 tiles)
 // 30: Shield (2 tiles)
 // 32: ?
+
+
 
 
 // SPRITE PALETTES:
@@ -42,5 +45,6 @@
 
 void init_player_gfx(void);
 void init_ui_gfx(void);
+void init_font(void);
 
 #endif

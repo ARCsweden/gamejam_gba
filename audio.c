@@ -14,7 +14,7 @@ void play_song(hUGESong_t* track) {
     hUGE_init(track);
 }
 
-uint8_t shoot_sfx() {
+uint8_t shoot_sfx(void) {
     const uint8_t shoot_sfx_delay = 50;
     hUGE_mute_channel(HT_CH1,HT_CH_MUTE);
     NR10_REG=0X7D;
@@ -23,10 +23,6 @@ uint8_t shoot_sfx() {
     NR13_REG=0XA6;
     NR14_REG=0X86;
     return shoot_sfx_delay;
-}
-
-void play_sfx() {
-
 }
 
 void init_audio(void) {
