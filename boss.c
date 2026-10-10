@@ -1,35 +1,71 @@
 #include "boss.h"
 #include "gamestate.h"
 #include "gamelogic.h"
+#include "sprite_manager.h"
 
-Instruction instruction_list[MAX_INST];
+Instruction* instruction_list[MAX_INST];
 uint8_t active_ins_index;
 uint8_t append_ins_index; 
 uint16_t progress;
+
+ Instruction wait_1000ms = {WAIT, 0, 60};
+ Instruction wait_500ms = {WAIT, 0, 30};
+ Instruction skip = {WAIT, 0, 0};
+ Instruction move_right_small = {MOVE, 1, 30};
+ Instruction move_left_small = {MOVE, -1, 30};
+ Instruction new_inst = {NEW_INS, 0, 0};
+ Instruction shoot_simple = {SHOOT_SMPL, 0, 0};
 
 void init_boss_logic(void) {
     progress = 0;
     active_ins_index = 0;
     append_ins_index = 0;
+    move_right_small.speed.w = TO_FIXED(1,0);
+    move_left_small.speed.w = TO_FIXED(1,0);
+    for (int i = 0; i < MAX_INST; i++){
+        instruction_list[i] = &skip;
+    }
+    instruction_list[0] = &move_right_small;
+    instruction_list[1] = &wait_1000ms;
+    instruction_list[2] = &move_left_small;
+    instruction_list[3] = &wait_500ms;
+    instruction_list[4] = &move_left_small;
+    instruction_list[5] = &shoot_simple;
+    instruction_list[6] = &move_left_small;
+    instruction_list[7] = &move_right_small;
+    instruction_list[8] = &wait_500ms;
+    instruction_list[9] = &move_right_small;
+    instruction_list[10] = &wait_1000ms;
 }
 
 void update_boss_logic(void) {
+    fixed speed_x;
+    fixed speed_y;
+    speed_x.w = 0;
+    speed_y.w = BOSS_SPELL_SPEED;
     
-    switch (instruction_list[active_ins_index].type) {
+    switch (instruction_list[active_ins_index]->type) {
         case WAIT:
             break;
         case MOVE:
             //Move with speed
-            if(instruction_list[active_ins_index].direction > 0) {
-                state.boss.pos_x.w += instruction_list[active_ins_index].speed.w;
-                if(state.boss.pos_x.h < border_left) state.boss.pos_x.h = border_left;
-            }
-            if(instruction_list[active_ins_index].direction < 0) {
-                state.boss.pos_x.w -= instruction_list[active_ins_index].speed.w;
+            if(instruction_list[active_ins_index]->direction > 0) {
+                state.boss.pos_x.w += instruction_list[active_ins_index]->speed.w;
                 if(state.boss.pos_x.h > border_right) state.boss.pos_x.h = border_right;
+            }
+            if(instruction_list[active_ins_index]->direction < 0) {
+                state.boss.pos_x.w -= instruction_list[active_ins_index]->speed.w;
+                if(state.boss.pos_x.h < border_left) state.boss.pos_x.h = border_left;
             }
             break;
         case SHOOT_SMPL:
+            if(spawn_enemy_projectile(
+            state.boss.pos_x.h,
+            state.boss.pos_y.h + 8,
+            0, // Straight down
+            speed_x,
+            speed_y
+        ));
             break;
         case SHOOT_LRG:
             break;
@@ -39,6 +75,9 @@ void update_boss_logic(void) {
         default:
             break;
     }
-    if(progress >= instruction_list[active_ins_index].duration) active_ins_index = (active_ins_index + 1) % MAX_INST;
-    progress++;
+    if(progress >= instruction_list[active_ins_index]->duration) {
+        active_ins_index = (active_ins_index + 1) % MAX_INST;
+        progress = 0;
+    }
+    else progress++;
 }

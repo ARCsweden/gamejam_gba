@@ -6,6 +6,16 @@
 #include "sprite_manager.h"
 #include "collision.h"
 
+// Include audio
+#include "audio.h"
+
+// Audio vars
+uint8_t sound_ch1_counter = 0;
+uint8_t sound_ch2_counter = 0;
+uint8_t sound_ch3_counter = 0;
+uint8_t sound_ch4_counter = 0;
+
+
 // Holding buttons pressed
 uint8_t buttons = 0;
 uint8_t buttons_prev = 0;
@@ -42,25 +52,10 @@ void update_game(void) {
         // Do something on A pressed (once)
         if(spawn_player_projectile()) {
             state.player.spell_cooldown = PLAYER_SPELL_COOLDOWN;
+            sound_ch1_counter = shoot_sfx();
         }
     }
-    if((buttons & J_B) && state.boss.spell_cooldown == 0) {
-        fixed speed_x;
-        fixed speed_y;
-        speed_x.w = 0;
-        speed_y.w = BOSS_SPELL_SPEED;
-        // Do something on A pressed (once)
-        if(spawn_enemy_projectile(
-            state.boss.pos_x.h,
-            state.boss.pos_y.h + 8,
-            0, // Straight down
-            speed_x,
-            speed_y
-        )) {
-            state.boss.spell_cooldown = BOSS_SPELL_COOLDOWN;
-        }
-    }
-
+  
     buttons_prev = buttons;
 
     update_boss_logic();
@@ -68,6 +63,34 @@ void update_game(void) {
     // Frame timer dependent animation
     if(state.player.spell_cooldown > 0) state.player.spell_cooldown--;
     if(state.boss.spell_cooldown > 0) state.boss.spell_cooldown--;
+
+    // Sound Handler
+    // Counters for each sound channel to resume playing music after a SFX
+    if(sound_ch1_counter > 0) {
+        sound_ch1_counter--;
+        if(sound_ch1_counter == 0) {
+            hUGE_mute_channel(HT_CH1,HT_CH_PLAY);
+        }
+    }
+    if(sound_ch2_counter > 0) {
+        sound_ch2_counter--;
+        if(sound_ch2_counter == 0) {
+            hUGE_mute_channel(HT_CH2,HT_CH_PLAY);
+        }
+    }
+    if(sound_ch3_counter > 0) {
+        sound_ch3_counter--;
+        if(sound_ch3_counter == 0) {
+            hUGE_mute_channel(HT_CH3,HT_CH_PLAY);
+        }
+    }
+    if(sound_ch4_counter > 0) {
+        sound_ch4_counter--;
+        if(sound_ch4_counter == 0) {
+            hUGE_mute_channel(HT_CH4,HT_CH_PLAY);
+        }
+    }
+
 
     frame++;
     if(frame >= 10) {
