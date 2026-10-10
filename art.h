@@ -4,6 +4,7 @@
 #include "assets/carpet.h"
 #include "assets/wizard.h"
 #include "assets/p_spell.h"
+#include "assets/boss.h"
 
 #include "assets/heart.h"
 
@@ -13,7 +14,7 @@
 // 1: Wizard(player)
 // 2: Spell(player)
 // 3:
-// 4:
+// 4: Boss
 // 5:
 // 6:
 // 7:

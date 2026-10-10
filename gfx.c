@@ -58,7 +58,7 @@ void update_gfx(void) {
 
     // Render boss wizard
     move_metasprite_ex(carpet_metasprites[0], carpet_TILE_ORIGIN, 0, E_CARPET_SPRITE, state.boss.pos_x.h,  state.boss.pos_y.h);
-    move_metasprite_ex(wizard_metasprites[0], wizard_TILE_ORIGIN, 0, E_WIZARD_SPRITE, state.boss.pos_x.h,  state.boss.pos_y.h - 5);
+    move_metasprite_ex(boss_metasprites[state.player.anim_frame], boss_TILE_ORIGIN, 0, E_WIZARD_SPRITE, state.boss.pos_x.h,  state.boss.pos_y.h - 5);
     
     
     // Scroll background
