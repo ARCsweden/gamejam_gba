@@ -4,6 +4,7 @@
 // Included to access state variable
 #include "gamestate.h"
 #include "sprite_manager.h"
+#include "collision.h"
 
 // Holding buttons pressed
 uint8_t buttons = 0;
@@ -75,5 +76,34 @@ void update_game(void) {
         if(state.player.anim_frame >= 4) state.player.anim_frame = 0;
     }
     update_projectiles();
+
+    // Check collisions
+    bounding_box_t player_bb = create_bb(state.player.pos_x.h - 4, state.player.pos_y.h - 4, 8, 8);
+    bounding_box_t boss_bb = create_bb(state.boss.pos_x.h - 6, state.boss.pos_y.h - 6, 12, 12);
+
+    // Check collision between boss and spells
+    for(uint8_t i = 0; i < NUM_PLAYER_SPELLS; ++i) {
+        projectile_t proj = player_projectile_pool[i];
+        if(proj.alive) {
+            bounding_box_t spell_bb = create_bb(proj.pos_x.h - proj.w / 2, proj.pos_y.h - proj.h / 2, proj.w, proj.h);
+            if(check_collision(boss_bb, spell_bb)) {
+                player_projectile_pool[i].alive = 0;
+                hide_sprite(player_projectile_pool[i].hw_sprite);
+                // TODO: Player hits boss logic
+            }
+        }
+    }
+    // Check collision between player and boss spells
+    for(uint8_t i = 0; i < NUM_SMALL_E_SPELLS; ++i) {
+        projectile_t proj = enemy_projectile_pool[i];
+        if(proj.alive) {
+            bounding_box_t spell_bb = create_bb(proj.pos_x.h - proj.w / 2, proj.pos_y.h - proj.h / 2, proj.w, proj.h);
+            if(check_collision(player_bb, spell_bb)) {
+                enemy_projectile_pool[i].alive = 0;
+                hide_sprite(enemy_projectile_pool[i].hw_sprite);
+                // TODO: Boss hits player logic
+            }
+        }
+    }
 }
 

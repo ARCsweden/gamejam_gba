@@ -13,7 +13,7 @@ void init_gamestate(void) {
     const uint8_t player_start_y = (SPRITE_LAYER_SCREEN_LIM_Y - PLAYER_START_Y);
 
     const uint8_t boss_start_x = 80 + SPRITE_LAYER_ORIG_X;
-    const uint8_t boss_start_y = SPRITE_LAYER_ORIG_Y + 8;
+    const uint8_t boss_start_y = SPRITE_LAYER_ORIG_Y + 64;// 8;
 
 
     state.player.pos_x.w = TO_FIXED(player_start_x, 0);
