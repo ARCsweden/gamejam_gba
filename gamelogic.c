@@ -51,10 +51,10 @@ void update_game(void) {
     if(state.player.spell_cooldown > 0) state.player.spell_cooldown--;
 
     frame++;
-    if(frame >= 60) {
+    if(frame >= 10) {
         frame = 0;
-        //state.letters_tile++;
-        //if(state.letters_tile >= 4) state.letters_tile = 0;
+        state.player.anim_frame++;
+        if(state.player.anim_frame >= 4) state.player.anim_frame = 0;
     }
     update_projectiles();
 }

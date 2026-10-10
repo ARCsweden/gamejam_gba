@@ -7,6 +7,7 @@ struct player_t {
     fixed pos_x;
     fixed pos_y;
     uint8_t spell_cooldown;
+    uint8_t anim_frame;
 };
 
 #endif
