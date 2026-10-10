@@ -44,7 +44,7 @@
 #define SPRITE_LAYER_OOB_X (SPRITE_LAYER_SCREEN_LIM_X + 16)
 #define SPRITE_LAYER_OOB_Y (SPRITE_LAYER_SCREEN_LIM_Y + 16)
 
-struct projectile_t {
+typedef struct projectile_t {
     fixed pos_x;
     fixed pos_y;
     fixed vel_x;
@@ -57,10 +57,10 @@ struct projectile_t {
     uint8_t dir; // bit[0] is x_dir, bit[1] is y_dir. '1' indicates negative direction
     // Rendering
     uint8_t hw_sprite; // Note, first HW sprite
-};
+} projectile_t;
 
-extern struct projectile_t enemy_projectile_pool[NUM_SMALL_E_SPELLS];
-extern struct projectile_t player_projectile_pool[NUM_PLAYER_SPELLS];
+extern projectile_t enemy_projectile_pool[NUM_SMALL_E_SPELLS];
+extern projectile_t player_projectile_pool[NUM_PLAYER_SPELLS];
 
 
 // TODO: Effects etc.

@@ -9,6 +9,8 @@
 
 void main(void)
 {
+    cpu_fast();
+
     // Initialize graphics
     init_gfx();
     // Initialize audio
