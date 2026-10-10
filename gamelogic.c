@@ -43,23 +43,7 @@ void update_game(void) {
             state.player.spell_cooldown = PLAYER_SPELL_COOLDOWN;
         }
     }
-    if((buttons & J_B) && state.boss.spell_cooldown == 0) {
-        fixed speed_x;
-        fixed speed_y;
-        speed_x.w = 0;
-        speed_y.w = BOSS_SPELL_SPEED;
-        // Do something on A pressed (once)
-        if(spawn_enemy_projectile(
-            state.boss.pos_x.h,
-            state.boss.pos_y.h + 8,
-            0, // Straight down
-            speed_x,
-            speed_y
-        )) {
-            state.boss.spell_cooldown = BOSS_SPELL_COOLDOWN;
-        }
-    }
-
+  
     buttons_prev = buttons;
 
     update_boss_logic();
