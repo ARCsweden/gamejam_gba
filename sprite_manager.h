@@ -46,16 +46,18 @@
 #define SPRITE_LAYER_OOB_Y (SPRITE_LAYER_SCREEN_LIM_Y + 16)
 
 struct projectile_t {
-    uint8_t pos_x;
-    uint8_t pos_y;
+    fixed pos_x;
+    fixed pos_y;
+    fixed vel_x;
+    fixed vel_y;
     // Collision, centered around pos_x
     uint8_t w;
     uint8_t h;
     // Flags
     uint8_t alive;
+    uint8_t dir; // bit[0] is x_dir, bit[1] is y_dir. '1' indicates negative direction
     // Rendering
     uint8_t hw_sprite; // Note, first HW sprite
-    uint8_t metasprite;
 };
 
 extern struct projectile_t enemy_projectile_pool[NUM_SMALL_E_SPELLS];
@@ -65,5 +67,9 @@ extern struct projectile_t player_projectile_pool[NUM_PLAYER_SPELLS];
 // TODO: Effects etc.
 
 void init_sprite_manager(void);
+
+uint8_t spawn_player_projectile(uint8_t pos_x, uint8_t pos_y);
+void update_projectiles(void);
+void draw_projectiles(void);
 
 #endif

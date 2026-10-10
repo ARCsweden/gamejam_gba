@@ -12,6 +12,9 @@
 #define SPEED_UP TO_FIXED(0, 85)
 #define SPEED_DOWN TO_FIXED(2, 85)
 
+#define PLAYER_SPELL_SPEED TO_FIXED(4, 0);
+
+#define PLAYER_SPELL_COOLDOWN 10
 
 struct gamestate_t {
     struct player_t player;

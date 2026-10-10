@@ -49,4 +49,6 @@ void update_gfx(void) {
 
     // Scroll background
     scroll_bkg(0,-1);
+
+    draw_projectiles();
 }
