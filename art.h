@@ -5,6 +5,8 @@
 #include "assets/wizard.h"
 #include "assets/p_spell.h"
 
+#include "assets/heart.h"
+
 
 // SPRITE PALETTES:
 // 0: Carpet
@@ -28,5 +30,6 @@
 // 7:
 
 void init_player_gfx(void);
+void init_ui_gfx(void);
 
 #endif
