@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include <gb/gb.h>
-
+#include "boss.h"
 #include "player.h"
 
 #define TO_FIXED(i, f) (((i) << 8) | (f))
@@ -15,6 +15,7 @@
 
 struct gamestate_t {
     struct player_t player;
+    struct boss_t boss;
 };
 
 extern struct gamestate_t state;

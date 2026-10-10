@@ -42,6 +42,8 @@ void update_game(void) {
     }
     buttons_prev = buttons;
 
+    update_boss_logic();
+
     // Frame timer dependent animation
     frame++;
     if(frame >= 60) {
