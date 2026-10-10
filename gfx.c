@@ -10,6 +10,7 @@
 
 #include <gbdk/metasprites.h>
 #include <gb/cgb.h>
+#include "assets/sand.h"
 
 const uint8_t ProfessorOak_tiles[64]={
     0x07,0x00,0x38,0x07,0x16,0x09,0x19,0x06,0x30,0x0f,0x54,0x2f,0x43,0x3d,0x52,0x3d,
@@ -28,6 +29,8 @@ const metasprite_t ProfessorOak_metasprite[] = {
 	METASPR_TERM
 };
 
+
+
 // Note, sprite indexes
 //#define GUY_TILE 0
 #define LETTERS_PAL S_PAL(0)
@@ -36,11 +39,26 @@ const metasprite_t ProfessorOak_metasprite[] = {
 #define OAK_PAL S_PAL(1)
 #define OAK_SPRITE 0
 
+const uint8_t bg_tile = 0;
+const uint8_t bg_tile_row[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+const uint8_t bg_attr_row[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+const uint8_t bg_attr = 1;
+
+
 void init_gfx(void) {
     SPRITES_8x16;
 
     // Initialize tiles (note sprite and tile 128-255 overlap)
     // set_bkg_data(first_tile, num_tiles, data)
+    set_bkg_data(0, 1, sand_tiles);
+    set_bkg_palette(S_PAL(1), 1, sand_palettes);
+
+    for(int i = 0; i < 32; i++) {
+        set_bkg_tiles(0, i, 32, 1, bg_tile_row);
+        set_bkg_attributes(0, i, 32, 1, bg_attr_row);
+    }
+
+    
     // set_bkg_tiles(x, y, w, h, tilemap)
     // set_sprite_data(first_tile, num_tiles, data)
     // set_sprite_tile(id, tile)
@@ -87,7 +105,7 @@ void update_gfx(void) {
     // scroll_sprite(id, x, y); move_sprite(id, x, y);
     // Move BKG layer offset
     // scroll_bkg(x, y); move_bkg(x, y);
-
+    scroll_bkg(0,-1);
     // Text (drawing.h)
     // gotogxy(x, y), color(f, b, mode), gprint/gprintn/gprintln/gprintf
 
