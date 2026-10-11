@@ -83,6 +83,9 @@ void update_gfx(void) {
         } else {
             move_metasprite_ex(wizard_metasprites[state.player.anim_frame], wizard_TILE_ORIGIN, 0, P_WIZARD_SPRITE, state.player.pos_x.h, state.player.dead_pos_y.h - 5);
         }
+        render_text(8, 0, "You lost!");
+        waitpad(J_START);
+        reset();
     }
 
     // Render player shield
@@ -114,6 +117,9 @@ void update_gfx(void) {
         } else {
             move_metasprite_ex(boss_metasprites[0], boss_TILE_ORIGIN, 0, E_WIZARD_SPRITE, state.boss.pos_x.h, state.boss.dead_pos_y.h - 5);
         }
+        render_text(8, 0, "You won!");
+        waitpad(J_START);
+        reset();
     }
 
     // Scroll background
