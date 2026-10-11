@@ -31,7 +31,8 @@ uint8_t frame = 0;
 #define BB_PLAYER 0
 #define BB_BOSS 1
 #define BB_SPELL 2
-static bounding_box_t _bbs[3];
+#define BB_SHIELD 3
+static bounding_box_t _bbs[4];
 
 void _update_bb(uint8_t index, uint8_t x, uint8_t y, uint8_t w, uint8_t h) {
     _bbs[index].right = x + w;
@@ -131,6 +132,11 @@ void update_game(void) {
     // Check collisions (last two parameters define the size of the hitbox, w/h)
     _update_bb(BB_PLAYER, state.player.pos_x.h - 4, state.player.pos_y.h - 4, 8, 8);
     _update_bb(BB_BOSS, state.boss.pos_x.h - 6, state.boss.pos_y.h - 6, 12, 12);
+    // Player shield
+    if(state.player.shield) {
+        _update_bb(BB_SHIELD, state.player.pos_x.h - 6, state.player.pos_y.h - 20, 12, 8);
+    }
+
 
     // Check collision between boss and spells
     alive = player_projectile_alive;
@@ -159,7 +165,11 @@ void update_game(void) {
         if(alive & 0x1) {
             projectile_t* proj = &enemy_projectile_pool[i];
             _update_bb(BB_SPELL, proj->pos_x.h - proj->w / 2, proj->pos_y.h - proj->h / 2, proj->w, proj->h);
-            if(check_collision(_bbs[BB_PLAYER], _bbs[BB_SPELL])) {
+            if(state.player.shield && check_collision(_bbs[BB_SHIELD], _bbs[BB_SPELL])) {
+                enemy_projectile_alive &= ~(1 << i);
+                hide_sprite(enemy_projectile_pool[i].hw_sprite);
+            }
+            else if(check_collision(_bbs[BB_PLAYER], _bbs[BB_SPELL])) {
                 enemy_projectile_alive &= ~(1 << i);
                 hide_sprite(enemy_projectile_pool[i].hw_sprite);
                 // TODO: Boss hits player logic
