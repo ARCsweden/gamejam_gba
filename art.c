@@ -20,7 +20,7 @@ void init_ui_gfx(void) {
     set_win_data(heart_TILE_ORIGIN, heart_TILE_COUNT, heart_tiles);
     set_win_data(heart_filled_TILE_ORIGIN, heart_filled_TILE_COUNT, heart_filled_tiles);
     const palette_color_t ui_palette[4] = {
-	RGB8(255,255,255), RGB8( 58,255, 91), RGB8(255,  0, 25), RGB8(  0,  0,  0)
+	RGB8(255,255,255), RGB8(0, 0, 0), RGB8(255, 0, 25), RGB8(  0,  0,  0)
 	};
     set_bkg_palette(S_PAL(0), 1, ui_palette);
 }

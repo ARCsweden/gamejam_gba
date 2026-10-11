@@ -15,6 +15,14 @@ uint8_t sound_ch2_counter = 0;
 uint8_t sound_ch3_counter = 0;
 uint8_t sound_ch4_counter = 0;
 
+// Font vars
+uint8_t color1_counter = 120;
+uint8_t color2_counter = 120;
+uint8_t color3_counter = 120;
+
+int8_t color1_delta = 6;
+int8_t color2_delta = 6;
+int8_t color3_delta = 6;
 
 // Holding buttons pressed
 uint8_t buttons = 0;
@@ -91,6 +99,33 @@ void update_game(void) {
     // Frame timer dependent animation
     if(state.player.spell_cooldown > 0) state.player.spell_cooldown--;
     if(state.boss.spell_cooldown > 0) state.boss.spell_cooldown--;
+
+
+    // Shifting palette over time
+    if(color2_counter > (250-color2_delta)) {
+        color2_delta = color2_delta * -1;
+        color2_counter = 250-color2_delta;
+    }
+    if(color2_counter < (10+color2_delta)) {
+        color2_delta = color2_delta * -1; 
+        color2_counter = 10+color2_delta;
+    }
+
+    if(color3_counter > (250-color3_delta)) {
+        color3_delta = color3_delta * -1;
+        color3_counter = 250-color3_delta;
+    }
+    if(color3_counter < (10+color3_delta)) {
+        color3_delta = color3_delta * -1; 
+        color3_counter = 10+color3_delta;
+    }
+    color2_counter = color2_counter + color2_delta;
+    color3_counter = color3_counter + color3_delta;
+
+    const palette_color_t ui_palette[4] = {
+	RGB8(255,255,255), RGB8(0, 0, 0), RGB8(255, color2_counter, color3_counter), RGB8(  0,  0,  0)
+	};
+    set_bkg_palette(S_PAL(0), 1, ui_palette);
 
     // Sound Handler
     // Counters for each sound channel to resume playing music after a SFX

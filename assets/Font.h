@@ -13,7 +13,7 @@
 #define Font_TILE_H 8
 #define Font_WIDTH 208
 #define Font_HEIGHT 16
-#define Font_TILE_COUNT 45
+#define Font_TILE_COUNT 46
 #define Font_PALETTE_COUNT 1
 #define Font_COLORS_PER_PALETTE 4
 #define Font_TOTAL_COLORS 4
@@ -24,6 +24,6 @@ extern const unsigned char Font_map[52];
 BANKREF_EXTERN(Font)
 
 extern const palette_color_t Font_palettes[4];
-extern const uint8_t Font_tiles[720];
+extern const uint8_t Font_tiles[736];
 
 #endif
