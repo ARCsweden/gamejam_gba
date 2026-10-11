@@ -20,10 +20,14 @@ uint8_t bg_tile_row[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
 uint8_t bg_attr_row[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
 const uint8_t bg_attr = 1;
 
+char text[12] = "           ";
+
 void draw_health(void);
 
 void init_gfx(void) {
     SPRITES_8x16;
+
+    
 
     init_player_gfx();
     init_ui_gfx();
@@ -69,6 +73,8 @@ void init_gfx(void) {
     enable_interrupts();
     SHOW_WIN;
     DISPLAY_ON;
+
+    render_text(8, 0, text);
 }
 
 void update_gfx(void) {
@@ -83,7 +89,7 @@ void update_gfx(void) {
         } else {
             move_metasprite_ex(wizard_metasprites[state.player.anim_frame], wizard_TILE_ORIGIN, 0, P_WIZARD_SPRITE, state.player.pos_x.h, state.player.dead_pos_y.h - 5);
         }
-        char text[12] = "You lost!";
+        text = "You lost!";
         render_text(8, 0, text);
     }
 
@@ -100,7 +106,7 @@ void update_gfx(void) {
     set_win_tiles(0, 0, 1, 1, heart_filled_map);
     set_win_tiles(1, 0, 1, 1, heart_map);
     set_win_tiles(2, 0, 1, 1, heart_map);
-    char text[12] = "WIZARD!";
+    text = "WIZARD!";
     render_text(8, 0, text);
 
     draw_health();
@@ -116,7 +122,7 @@ void update_gfx(void) {
         } else {
             move_metasprite_ex(boss_metasprites[0], boss_TILE_ORIGIN, 0, E_WIZARD_SPRITE, state.boss.pos_x.h, state.boss.dead_pos_y.h - 5);
         }
-        char text[12] = "You won!";
+        text = "You won!";
         render_text(8, 0, text);
     }
 
