@@ -21,6 +21,7 @@ void init_gamestate(void) {
     state.boss.vel_y.w = TO_FIXED(1, 0);
     state.boss.dir = 0;
 
+    state.boss.hit = 0;
     state.boss.hp = BOSS_MAXHP;
     state.boss.spell_cooldown = 0;
 
@@ -28,4 +29,5 @@ void init_gamestate(void) {
     state.player.anim_frame = 0;
     state.player.shield = 0;
     state.player.hp = PLAYER_MAX_HP;
+    state.player.hit = 0;
 }
