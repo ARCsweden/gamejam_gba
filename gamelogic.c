@@ -32,7 +32,8 @@ uint8_t frame = 0;
 #define BB_BOSS 1
 #define BB_SPELL 2
 #define BB_SHIELD 3
-static bounding_box_t _bbs[4];
+#define BB_SHIELD_POWERUP 4
+static bounding_box_t _bbs[5];
 
 void _update_bb(uint8_t index, uint8_t x, uint8_t y, uint8_t w, uint8_t h) {
     _bbs[index].right = x + w;
@@ -73,7 +74,7 @@ void update_game(void) {
             }
         }
         // Activate shield when holding B
-        state.player.shield = (buttons & J_B);
+        //state.player.shield = (buttons & J_B);
     } else if(state.player.dead_pos_y.h <= SPRITE_LAYER_OOB_Y) {
         state.player.dead_pos_y.w += SPEED_DOWN;
     }
@@ -128,6 +129,7 @@ void update_game(void) {
         if(state.player.anim_frame >= 4) state.player.anim_frame = 0;
     }
     update_projectiles();
+    update_shield_powerup();
 
     // Check collisions (last two parameters define the size of the hitbox, w/h)
     _update_bb(BB_PLAYER, state.player.pos_x.h - 4, state.player.pos_y.h - 4, 8, 8);
@@ -182,6 +184,13 @@ void update_game(void) {
             }
         }
         alive >>= 1;
+    }
+    // Check player picking up shield powerup
+    if(state.shield_powerup.spawned && state.player.hp > 0) {
+        _update_bb(BB_SHIELD_POWERUP, state.shield_powerup.pos_x.h - 5, state.shield_powerup.pos_y.h - 5, 10, 10);
+        if(check_collision(_bbs[BB_PLAYER], _bbs[BB_SHIELD_POWERUP])) {
+            pickup_shield();
+        }
     }
 }
 
