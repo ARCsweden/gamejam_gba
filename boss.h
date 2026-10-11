@@ -32,6 +32,7 @@ typedef struct boss_t {
     uint8_t dir;
     uint8_t spell_cooldown;
     uint8_t hp;
+    uint8_t hit_timer;
 }boss_t;
 
 void init_boss_logic(void);
