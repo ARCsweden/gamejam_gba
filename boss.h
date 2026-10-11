@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <gb/gb.h>
 
-#define MAX_INST 16
+#define MAX_INST 32
 #define BOSS_MAXHP 255 
 
 typedef enum ins_type {
