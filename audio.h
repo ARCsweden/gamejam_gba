@@ -5,6 +5,7 @@
 
 // Note, reference to music.c, a track exported from hUGETracker
 extern const hUGESong_t music;
+extern const hUGESong_t arabicuge;
 
 void init_audio(void);
 
