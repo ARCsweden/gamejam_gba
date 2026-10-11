@@ -33,6 +33,8 @@
 #define SHIELD_COOLDOWN 300 // 5s
 #define SHIELD_DURATION 180 // 3s (MAX is 255)
 
+#define HIT_FX_FRAMES 10
+
 struct gamestate_t {
     struct player_t player;
     struct boss_t boss;

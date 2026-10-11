@@ -5,9 +5,11 @@
 #include "gamestate.h"
 #include "sprite_manager.h"
 #include "collision.h"
+#include "art.h"
 
 // Include audio
 #include "audio.h"
+
 
 // Audio vars
 uint8_t sound_ch1_counter = 0;
@@ -157,11 +159,25 @@ void update_game(void) {
     }
 
 
+
     frame++;
     if(frame >= 10) {
         frame = 0;
         state.player.anim_frame++;
         if(state.player.anim_frame >= 4) state.player.anim_frame = 0;
+    }
+    // Hit FX
+    if(state.player.hit_timer > 0) {
+        state.player.hit_timer--;
+        if(state.player.hit_timer == 0) {
+            set_sprite_palette(S_PAL(1), 1, wizard_palettes);
+        }
+    }
+    if(state.boss.hit_timer > 0) {
+        state.boss.hit_timer--;
+        if(state.boss.hit_timer == 0) {
+            set_sprite_palette(S_PAL(4), 1, boss_palettes);
+        }
     }
     update_projectiles();
     update_shield_powerup();
@@ -193,6 +209,8 @@ void update_game(void) {
             if(check_collision(_bbs[BB_BOSS], _bbs[BB_SPELL])) {
                 player_projectile_alive &= ~(1 << i);
                 hide_sprite(player_projectile_pool[i].hw_sprite);
+                state.boss.hit_timer = HIT_FX_FRAMES;
+                set_sprite_palette(S_PAL(4), 1, boss_hit_palettes);
                 // Check if boss is alive
                 if(state.boss.hp > 0) {
                     state.boss.hp--;
@@ -218,6 +236,8 @@ void update_game(void) {
             else if(check_collision(_bbs[BB_PLAYER], _bbs[BB_SPELL])) {
                 enemy_projectile_alive &= ~(1 << i);
                 hide_sprite(enemy_projectile_pool[i].hw_sprite);
+                state.player.hit_timer = HIT_FX_FRAMES;
+                set_sprite_palette(S_PAL(1), 1, boss_palettes);
                 // TODO: Boss hits player logic
                 if(state.player.hp > 0) {
                     state.player.hp--;

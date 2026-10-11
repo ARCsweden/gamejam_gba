@@ -2,6 +2,10 @@
 
 #include "sprite_manager.h"
 
+const palette_color_t boss_hit_palettes[4] = {
+	RGB8(  0,  0,  0), RGB8(255, 0, 230), RGB8(179, 0, 150), RGB8(102, 0, 65)
+	};
+
 void init_player_gfx(void) {
     set_sprite_data(carpet_TILE_ORIGIN, carpet_TILE_COUNT, carpet_tiles);
     set_sprite_palette(S_PAL(0), 1, carpet_palettes);

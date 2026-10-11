@@ -30,7 +30,7 @@
 // 1: Wizard(player)
 // 2: Spell(player) + shield
 // 3: Spell(enemy)
-// 4: Boss
+// 4: Boss /boss_hit
 // 5:
 // 6:
 // 7:
@@ -45,6 +45,8 @@
 // 5:
 // 6:
 // 7:
+
+extern const palette_color_t boss_hit_palettes[4];
 
 void init_player_gfx(void);
 void init_ui_gfx(void);
