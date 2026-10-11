@@ -136,20 +136,29 @@ void draw_health(void) {
 
 void draw_boss_hp_bar(void) {
     uint8_t segments = state.boss.hp >> 2;
+    uint8_t current_tile = 11;
     uint8_t current_segment;
 
     for(uint8_t i = 0; i < 8; ++i) {
-        
+        current_segment = (1+i) * 8;
+        if(segments < current_segment) {
+            current_tile = segments % 8;
+        }
+        if(segments + 8 < current_segment) {
+            set_win_tiles(18-i, 0, 1, 1, &Font_map[0]);
+        } else {
+            set_win_tiles(18-i, 0, 1, 1, &boss_health_bar_map[current_tile]);
+        }
     }
 
-    set_win_tiles(11, 0, 1, 1, &boss_health_bar_map[11]);
-    set_win_tiles(12, 0, 1, 1, &boss_health_bar_map[0]);
-    set_win_tiles(13, 0, 1, 1, &boss_health_bar_map[0]);
-    set_win_tiles(14, 0, 1, 1, &boss_health_bar_map[0]);
-    set_win_tiles(15, 0, 1, 1, &boss_health_bar_map[0]);
-    set_win_tiles(16, 0, 1, 1, &boss_health_bar_map[0]);
-    set_win_tiles(17, 0, 1, 1, &boss_health_bar_map[0]);
-    set_win_tiles(18, 0, 1, 1, &boss_health_bar_map[0]);
+    // set_win_tiles(11, 0, 1, 1, &boss_health_bar_map[11]);
+    // set_win_tiles(12, 0, 1, 1, &boss_health_bar_map[0]);
+    // set_win_tiles(13, 0, 1, 1, &boss_health_bar_map[0]);
+    // set_win_tiles(14, 0, 1, 1, &boss_health_bar_map[0]);
+    // set_win_tiles(15, 0, 1, 1, &boss_health_bar_map[0]);
+    // set_win_tiles(16, 0, 1, 1, &boss_health_bar_map[0]);
+    // set_win_tiles(17, 0, 1, 1, &boss_health_bar_map[0]);
+    // set_win_tiles(18, 0, 1, 1, &boss_health_bar_map[0]);
 
     set_win_tiles(19, 0, 1, 1, &boss_health_bar_map[10]);
 }
