@@ -6,6 +6,7 @@
 #include "assets/p_spell.h"
 #include "assets/boss.h"
 #include "assets/shield.h"
+#include "assets/shield_powerup.h"
 
 #include "assets/heart.h"
 #include "assets/heart_filled.h"
@@ -17,8 +18,10 @@
 // 16: Player spell (2 tiles)
 // 18: Boss (12 tiles)
 // 30: Shield (2 tiles)
-// 32: ?
-
+// 32: Heart (2 tiles)
+// 34: Heart filled (2 tiles)
+// 36: Shield powerup (4 tiles)
+// 40: ?
 
 
 
@@ -34,8 +37,8 @@
 
 
 // BKG PALETTES:
-// 0:
-// 1:
+// 0: UI layer
+// 1: Sand
 // 2:
 // 3:
 // 4:
