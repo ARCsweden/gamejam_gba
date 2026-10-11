@@ -5,6 +5,7 @@
 #include <gb/gb.h>
 #include "boss.h"
 #include "player.h"
+#include "shield.h"
 
 #define TO_FIXED(i, f) (((i) << 8) | (f))
 
@@ -28,9 +29,16 @@
 
 #define PLAYER_MAX_HP 5
 
+#define SHIELD_MOVE_SPEED TO_FIXED(1, 0)
+#define SHIELD_COOLDOWN 300 // 5s
+#define SHIELD_DURATION 180 // 3s (MAX is 255)
+
+#define HIT_FX_FRAMES 10
+
 struct gamestate_t {
     struct player_t player;
     struct boss_t boss;
+    shield_powerup_t shield_powerup;
 };
 
 extern struct gamestate_t state;
