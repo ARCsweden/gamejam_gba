@@ -5,9 +5,11 @@
 #include "gamestate.h"
 #include "sprite_manager.h"
 #include "collision.h"
+#include "art.h"
 
 // Include audio
 #include "audio.h"
+
 
 // Audio vars
 uint8_t sound_ch1_counter = 0;
@@ -157,23 +159,46 @@ void update_game(void) {
     }
 
 
+
     frame++;
     if(frame >= 10) {
         frame = 0;
         state.player.anim_frame++;
         if(state.player.anim_frame >= 4) state.player.anim_frame = 0;
     }
+    // Hit FX
+    if(state.player.hit_timer > 0) {
+        state.player.hit_timer--;
+        if(state.player.hit_timer == 0) {
+            set_sprite_palette(S_PAL(1), 1, wizard_palettes);
+        }
+    }
+    if(state.boss.hit_timer > 0) {
+        state.boss.hit_timer--;
+        if(state.boss.hit_timer == 0) {
+            set_sprite_palette(S_PAL(4), 1, boss_palettes);
+        }
+    }
     update_projectiles();
     update_shield_powerup();
 
     // Check collisions (last two parameters define the size of the hitbox, w/h)
     _update_bb(BB_PLAYER, state.player.pos_x.h - 4, state.player.pos_y.h - 4, 8, 8);
-    _update_bb(BB_BOSS, state.boss.pos_x.h - 6, state.boss.pos_y.h - 6, 12, 12);
+    if(state.boss.hp) {
+        _update_bb(BB_BOSS, state.boss.pos_x.h - 6, state.boss.pos_y.h - 6, 12, 12);
+    } else {
+        _update_bb(BB_BOSS, state.boss.pos_x.h - 6, state.boss.dead_pos_y.h - 6, 12, 12);
+    }
     // Player shield
     if(state.player.shield) {
         _update_bb(BB_SHIELD, state.player.pos_x.h - 6, state.player.pos_y.h - 20, 12, 8);
     }
 
+    // Ragebait check
+    if(state.player.hp > 0 && check_collision(_bbs[BB_BOSS], _bbs[BB_PLAYER])) {
+        state.player.hp = 0;
+        state.player.dead_pos_y = state.player.pos_y;
+    }
 
     // Check collision between boss and spells
     alive = player_projectile_alive;
@@ -184,6 +209,8 @@ void update_game(void) {
             if(check_collision(_bbs[BB_BOSS], _bbs[BB_SPELL])) {
                 player_projectile_alive &= ~(1 << i);
                 hide_sprite(player_projectile_pool[i].hw_sprite);
+                state.boss.hit_timer = HIT_FX_FRAMES;
+                set_sprite_palette(S_PAL(4), 1, boss_hit_palettes);
                 // Check if boss is alive
                 if(state.boss.hp > 0) {
                     state.boss.hp--;
@@ -209,6 +236,8 @@ void update_game(void) {
             else if(check_collision(_bbs[BB_PLAYER], _bbs[BB_SPELL])) {
                 enemy_projectile_alive &= ~(1 << i);
                 hide_sprite(enemy_projectile_pool[i].hw_sprite);
+                state.player.hit_timer = HIT_FX_FRAMES;
+                set_sprite_palette(S_PAL(1), 1, boss_palettes);
                 // TODO: Boss hits player logic
                 if(state.player.hp > 0) {
                     state.player.hp--;

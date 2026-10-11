@@ -2,27 +2,36 @@
 #include "gamestate.h"
 #include "gamelogic.h"
 #include "sprite_manager.h"
+#include <rand.h>
+
+#define RAND_RANGE_8BIT(randval, range) (uint8_t)(((randval & 0xFFu) * range) >> 8)
 
 Instruction* instruction_list[MAX_INST];
 uint8_t active_ins_index;
 uint8_t append_ins_index; 
 uint16_t progress;
-
+uint8_t rand_num;
+int8_t move_offset;
 void load_template(Instruction* template[]);
 
-const Instruction wait_1000ms = {WAIT, 0, 60};
-const Instruction wait_500ms = {WAIT, 0, 30};
-const Instruction wait_250ms = {WAIT, 0, 15};
+const Instruction w_3000ms = {WAIT, 0, 180};
+const Instruction w_1000ms = {WAIT, 0, 60};
+const Instruction w_750ms = {WAIT, 0, 45};
+const Instruction w_500ms = {WAIT, 0, 30};
+const Instruction w_250ms = {WAIT, 0, 15};
+const Instruction w_125ms = {WAIT, 0, 7};
 const Instruction skip = {WAIT, 0, 0};
-const Instruction move_right_small = {MOVE, 1, 30, {.w = TO_FIXED(1,0)}};
-const Instruction move_left_small = {MOVE, -1, 30, {.w = TO_FIXED(1,0)}};
 const Instruction new_inst = {NEW_INS, 0, 0};
-const Instruction shoot_simple = {SHOOT_SMPL, 0, 0};
 
 const Instruction s_s = {SHOOT_SMPL, 0, 0};
 const Instruction s_s_l = {SHOOT_SMPL, 1,0, {.w = TO_FIXED(0,48)}};
+const Instruction s_s_l2 = {SHOOT_SMPL, 1,0, {.w = TO_FIXED(0,96)}};
+const Instruction s_s_l3 = {SHOOT_SMPL, 1,0, {.w = TO_FIXED(0,144)}};
+const Instruction s_s_l4 = {SHOOT_SMPL, 1,0, {.w = TO_FIXED(0,192)}};
 const Instruction s_s_r = {SHOOT_SMPL, 0,0, {.w = TO_FIXED(0,48)}};
-
+const Instruction s_s_r2 = {SHOOT_SMPL, 0,0, {.w = TO_FIXED(0,96)}};
+const Instruction s_s_r3 = {SHOOT_SMPL, 0,0, {.w = TO_FIXED(0,144)}};
+const Instruction s_s_r4 = {SHOOT_SMPL, 0,0, {.w = TO_FIXED(0,192)}};
 
 const Instruction mv_r_1 = {MOVE, 1, 4, {.w = TO_FIXED(2,0)}};
 const Instruction mv_l_1 = {MOVE, -1, 4, {.w = TO_FIXED(2,0)}};
@@ -42,14 +51,21 @@ const Instruction mv_l_3s = {MOVE, -1, 24, {.w = TO_FIXED(1,0)}};
 const Instruction mv_r_4s = {MOVE, 1, 32, {.w = TO_FIXED(1,0)}};
 const Instruction mv_l_4s = {MOVE, -1, 32, {.w = TO_FIXED(1,0)}};
 
-const Instruction* template1[7] = {&move_right_small,&wait_1000ms,&move_left_small,&shoot_simple,&wait_500ms,&shoot_simple,&new_inst};
-const //Instruction* template1[7] = {&move_right_small,&wait_1000ms,&move_left_small,&shoot_simple,&wait_500ms,&shoot_simple,&new_inst};
-const Instruction* template2[10] = {&mv_l_1,&shoot_simple,&mv_l_1,&shoot_simple,&mv_l_1,&shoot_simple,&mv_r_2,&shoot_simple,&mv_r_1,&new_inst};
+const Instruction* start[] = {&w_3000ms,&new_inst};
+const Instruction* temp_mv_l[] = {&mv_l_1,&new_inst};
+const Instruction* temp_mv_r[] = {&mv_r_1,&new_inst};
+const Instruction* Lv1_short_l_s[] = {&mv_l_1,&s_s,&w_1000ms,&new_inst};
+//const Instruction* Lv1_short_l_s[] = {&mv_l_1,&s_s,&w_1000ms,&new_inst};
+const Instruction* Lv1_short_r_s[] = {&mv_r_1,&s_s,&w_1000ms,&new_inst};
+//const Instruction* Lv1_short_r_s[] = {&mv_r_1,&s_s,&w_1000ms,&new_inst};
 
-const Instruction* easy_left[13] = {&mv_l_4,&mv_l_4,&s_s_l,&mv_r_1,&s_s_l,&mv_r_1,&s_s_l,&mv_r_1,&s_s_l,&mv_r_1,&mv_r_4,&new_inst};
-const Instruction* easy_right[13] = {&mv_r_4,&mv_r_4,&s_s_r,&mv_l_1,&s_s_r,&mv_l_1,&s_s_r,&mv_l_1,&s_s_r,&mv_l_1,&mv_l_4,&new_inst};
-const Instruction* mid_left[10] = {&mv_l_1,&s_s,&wait_250ms,&s_s_l,&wait_250ms,&s_s_r,&wait_250ms,&mv_r_1s,&wait_500ms,&new_inst};
-const Instruction* mid_right[10] = {&mv_r_1,&s_s,&wait_250ms,&s_s_l,&wait_250ms,&s_s_r,&wait_250ms,&mv_l_1s,&wait_500ms,&new_inst};
+const Instruction* easy_left[] = {&mv_l_4,&mv_l_4,&s_s_l,&mv_r_1,&s_s_l,&mv_r_1,&s_s_l,&mv_r_1,&s_s_l,&mv_r_1,&mv_r_4,&w_500ms,&new_inst};
+const Instruction* easy_right[] = {&mv_r_4,&mv_r_4,&s_s_r,&mv_l_1,&s_s_r,&mv_l_1,&s_s_r,&mv_l_1,&s_s_r,&mv_l_1,&mv_l_4,&w_500ms,&new_inst};
+const Instruction* mid_left[] = {&mv_l_1,&s_s,&w_250ms,&s_s_l,&w_250ms,&s_s_r,&w_250ms,&mv_r_1,&w_500ms,&new_inst};
+const Instruction* mid_right[] = {&mv_r_1,&s_s,&w_250ms,&s_s_l,&w_250ms,&s_s_r,&w_250ms,&mv_l_1,&w_500ms,&new_inst};
+const Instruction* mid_s_left[]  = {&s_s,&w_125ms,&s_s_l,&w_125ms,&s_s_l2,&w_125ms,&s_s_l3,&w_125ms,&s_s_l4,&w_1000ms,&new_inst};
+const Instruction* mid_s_right[]  = {&s_s,&w_125ms,&s_s_r,&w_125ms,&s_s_r2,&w_125ms,&s_s_r3,&w_125ms,&s_s_r4,&w_1000ms,&new_inst};
+
 void init_boss_logic(void) {
     progress = 0;
     active_ins_index = 0;
@@ -58,7 +74,7 @@ void init_boss_logic(void) {
     for (int i = 0; i < MAX_INST; i++){
         instruction_list[i] = &skip;
     }
-    load_template(easy_right);
+    load_template(start);
 }
 
 void update_boss_logic(void) {
@@ -95,12 +111,38 @@ void update_boss_logic(void) {
         case SHOOT_LRG:
             break;
         case NEW_INS:
+            if(state.boss.hp > 245){
+                if(state.boss.pos_x.h > state.player.pos_x.h){
+                    load_template(Lv1_short_l_s);
+                    move_offset --;
+                }
+                else{
+                    load_template(Lv1_short_r_s);
+                    move_offset ++;
+                }
+                break;
+            }
+        if(move_offset > 0) {
+            load_template(temp_mv_l);
+            move_offset --;
+            break;
+        }
+        if(move_offset < 0){
+            load_template(temp_mv_r);
+            move_offset++;
+            break;
+        }
+        
         if (state.player.pos_x.h > 50 && state.player.pos_x.h < 110){
             if(state.player.pos_x.h > 80){
-            load_template(mid_right);
+                rand_num = RAND_RANGE_8BIT(rand(),2);
+                if(rand_num == 0) load_template(mid_right);
+                if(rand_num == 1) load_template(mid_s_right);
             }
             else{
-                load_template(mid_left);
+                rand_num = RAND_RANGE_8BIT(rand(),2);
+                if(rand_num == 0) load_template(mid_left);
+                if(rand_num == 1) load_template(mid_s_left);
             }
         }
         else if(state.player.pos_x.h > 80){
