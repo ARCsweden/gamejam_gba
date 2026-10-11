@@ -133,14 +133,15 @@ void update_game(void) {
     _update_bb(BB_BOSS, state.boss.pos_x.h - 6, state.boss.pos_y.h - 6, 12, 12);
 
     // Check collision between boss and spells
+    alive = player_projectile_alive;
     for(uint8_t i = 0; i < NUM_PLAYER_SPELLS; ++i) {
-        projectile_t proj = player_projectile_pool[i];
-        if(proj.alive) {
-            _update_bb(BB_SPELL, proj.pos_x.h - proj.w / 2, proj.pos_y.h - proj.h / 2, proj.w, proj.h);
+        if(alive & 0x1) {
+            projectile_t* proj = &player_projectile_pool[i];
+            _update_bb(BB_SPELL, proj->pos_x.h - proj->w / 2, proj->pos_y.h - proj->h / 2, proj->w, proj->h);
             if(check_collision(_bbs[BB_BOSS], _bbs[BB_SPELL])) {
-                player_projectile_pool[i].alive = 0;
+                player_projectile_alive &= ~(1 << i);
                 hide_sprite(player_projectile_pool[i].hw_sprite);
-
+                // Check if boss is alive
                 if(state.boss.hp > 0) {
                     state.boss.hp--;
                     if (state.boss.hp == 0) {
@@ -150,14 +151,16 @@ void update_game(void) {
                 }
             }
         }
+        alive >>= 1;
     }
     // Check collision between player and boss spells
+    alive = enemy_projectile_alive;
     for(uint8_t i = 0; i < NUM_SMALL_E_SPELLS; ++i) {
-        projectile_t proj = enemy_projectile_pool[i];
-        if(proj.alive) {
-            _update_bb(BB_SPELL, proj.pos_x.h - proj.w / 2, proj.pos_y.h - proj.h / 2, proj.w, proj.h);
+        if(alive & 0x1) {
+            projectile_t* proj = &enemy_projectile_pool[i];
+            _update_bb(BB_SPELL, proj->pos_x.h - proj->w / 2, proj->pos_y.h - proj->h / 2, proj->w, proj->h);
             if(check_collision(_bbs[BB_PLAYER], _bbs[BB_SPELL])) {
-                enemy_projectile_pool[i].alive = 0;
+                enemy_projectile_alive &= ~(1 << i);
                 hide_sprite(enemy_projectile_pool[i].hw_sprite);
                 // TODO: Boss hits player logic
                 if(state.player.hp > 0) {
@@ -168,6 +171,7 @@ void update_game(void) {
                 }
             }
         }
+        alive >>= 1;
     }
 }
 
