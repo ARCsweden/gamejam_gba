@@ -3,7 +3,7 @@
 #include "gfx.h"
 
 
-void run_intro(){
+void run_intro(void){
 
 
 
