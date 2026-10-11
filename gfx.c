@@ -4,15 +4,20 @@
 #include "sprite_manager.h"
 #include "player.h"
 #include "art.h"
+#include "rand.h"
 #include "font.h"
 
 #include <gbdk/metasprites.h>
 #include <gb/cgb.h>
 #include "assets/sand.h"
+#include "assets/sand_cactus_1.h"
+#include "assets/sand_cactus_2.h"
+
+#define RAND_RANGE_8BIT(randval, range) (uint8_t)(((randval & 0xFFu) * range) >> 8)
 
 const uint8_t bg_tile = 0;
-const uint8_t bg_tile_row[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
-const uint8_t bg_attr_row[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+uint8_t bg_tile_row[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+uint8_t bg_attr_row[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
 const uint8_t bg_attr = 1;
 
 void draw_health(void);
@@ -25,13 +30,35 @@ void init_gfx(void) {
     init_font();
     move_win(7, 136);
 
+    uint16_t seed;
+    // waitpad(0xFF);
+    //waitpadup();
+    seed = DIV_REG;
+    //waitpad(0xFF);
+    //waitpadup();
+    seed |= (UWORD)DIV_REG << 8;
+
+    initarand(seed);
+
+
     // Initialize tiles (note sprite and bkg tiles 128-255 overlap)
+   
     set_bkg_data(sand_TILE_ORIGIN, 1, sand_tiles);
     set_bkg_palette(S_PAL(1), 1, sand_palettes);
+ 
+    set_bkg_data(sand_cactus_1_TILE_ORIGIN, 1, sand_cactus_1_tiles);
+    set_bkg_palette(S_PAL(2), 1, sand_cactus_1_palettes);
 
+    set_bkg_data(sand_cactus_2_TILE_ORIGIN, 1, sand_cactus_2_tiles);
+    set_bkg_palette(S_PAL(3), 1, sand_cactus_2_palettes);
+    
     for(int i = 0; i < 32; i++) {
-        set_bkg_tiles(0, i, 32, 1, bg_tile_row);
-        set_bkg_attributes(0, i, 32, 1, bg_attr_row);
+        for(int j = 0; j < 20; j++){
+            bg_tile_row[j] = RAND_RANGE_8BIT(rand(), 100) < 2 ? 2 : RAND_RANGE_8BIT(rand(), 100) < 2 ? 3 : 1;
+            bg_attr_row[j] = bg_tile_row[j];
+        }
+        set_bkg_tiles(0, i, 20, 1, bg_tile_row);
+        set_bkg_attributes(0, i, 20, 1, bg_attr_row);
     }
 
     init_sprite_manager();
