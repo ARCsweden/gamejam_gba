@@ -101,7 +101,9 @@ void update_gfx(void) {
     set_win_tiles(1, 0, 1, 1, heart_map);
     set_win_tiles(2, 0, 1, 1, heart_map);
     draw_health();
-    draw_boss_hp_bar();
+    if(state.boss.hp > 0 && state.player.hp > 0) {
+        draw_boss_hp_bar();
+    }
 
     // Render boss wizard
     move_metasprite_ex(carpet_metasprites[0], carpet_TILE_ORIGIN, 0, E_CARPET_SPRITE, state.boss.pos_x.h,  state.boss.pos_y.h);
