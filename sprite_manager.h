@@ -29,7 +29,8 @@
 #define S_SMALL_SPRITE (P_SPELL_SPRITE + NUM_PLAYER_SPELLS)
 // Note, MAX_HARDWARE_SPRITES is from gb.h, 40
 // NUMBER OF ENEMY PROJECTILES ON SCREEN AT THE SAME TIME
-#define NUM_SMALL_E_SPELLS (MAX_HARDWARE_SPRITES - S_SMALL_SPRITE)
+//#define NUM_SMALL_E_SPELLS (MAX_HARDWARE_SPRITES - S_SMALL_SPRITE)
+#define NUM_SMALL_E_SPELLS 8
 
 
 // Logic for sprite plane bounding box (off screen region)
@@ -53,7 +54,6 @@ typedef struct projectile_t {
     uint8_t w;
     uint8_t h;
     // Flags
-    uint8_t alive;
     uint8_t dir; // bit[0] is x_dir, bit[1] is y_dir. '1' indicates negative direction
     // Rendering
     uint8_t hw_sprite; // Note, first HW sprite
@@ -62,6 +62,8 @@ typedef struct projectile_t {
 extern projectile_t enemy_projectile_pool[NUM_SMALL_E_SPELLS];
 extern projectile_t player_projectile_pool[NUM_PLAYER_SPELLS];
 
+extern uint8_t player_projectile_alive;
+extern uint8_t enemy_projectile_alive;
 
 // TODO: Effects etc.
 

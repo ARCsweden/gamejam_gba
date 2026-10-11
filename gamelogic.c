@@ -27,6 +27,19 @@ const uint8_t border_top = SPRITE_LAYER_ORIG_Y + 72;
 
 uint8_t frame = 0;
 
+// Keep an array of bounding boxes for collision rather than creating them each frame
+#define BB_PLAYER 0
+#define BB_BOSS 1
+#define BB_SPELL 2
+static bounding_box_t _bbs[3];
+
+void _update_bb(uint8_t index, uint8_t x, uint8_t y, uint8_t w, uint8_t h) {
+    _bbs[index].right = x + w;
+    _bbs[index].left = x;
+    _bbs[index].top = y;
+    _bbs[index].bottom = y + h;
+}
+
 void update_game(void) {
     // Input
     // J_START, J_SELECT, J_A, J_B, J_UP, J_DOWN, J_LEFT, J_RIGHT
@@ -115,19 +128,20 @@ void update_game(void) {
     }
     update_projectiles();
 
-    // Check collisions
-    bounding_box_t player_bb = create_bb(state.player.pos_x.h - 4, state.player.pos_y.h - 4, 8, 8);
-    bounding_box_t boss_bb = create_bb(state.boss.pos_x.h - 6, state.boss.pos_y.h - 6, 12, 12);
+    // Check collisions (last two parameters define the size of the hitbox, w/h)
+    _update_bb(BB_PLAYER, state.player.pos_x.h - 4, state.player.pos_y.h - 4, 8, 8);
+    _update_bb(BB_BOSS, state.boss.pos_x.h - 6, state.boss.pos_y.h - 6, 12, 12);
 
     // Check collision between boss and spells
+    alive = player_projectile_alive;
     for(uint8_t i = 0; i < NUM_PLAYER_SPELLS; ++i) {
-        projectile_t proj = player_projectile_pool[i];
-        if(proj.alive) {
-            bounding_box_t spell_bb = create_bb(proj.pos_x.h - proj.w / 2, proj.pos_y.h - proj.h / 2, proj.w, proj.h);
-            if(check_collision(boss_bb, spell_bb)) {
-                player_projectile_pool[i].alive = 0;
+        if(alive & 0x1) {
+            projectile_t* proj = &player_projectile_pool[i];
+            _update_bb(BB_SPELL, proj->pos_x.h - proj->w / 2, proj->pos_y.h - proj->h / 2, proj->w, proj->h);
+            if(check_collision(_bbs[BB_BOSS], _bbs[BB_SPELL])) {
+                player_projectile_alive &= ~(1 << i);
                 hide_sprite(player_projectile_pool[i].hw_sprite);
-
+                // Check if boss is alive
                 if(state.boss.hp > 0) {
                     state.boss.hp--;
                     if (state.boss.hp == 0) {
@@ -137,14 +151,16 @@ void update_game(void) {
                 }
             }
         }
+        alive >>= 1;
     }
     // Check collision between player and boss spells
+    alive = enemy_projectile_alive;
     for(uint8_t i = 0; i < NUM_SMALL_E_SPELLS; ++i) {
-        projectile_t proj = enemy_projectile_pool[i];
-        if(proj.alive) {
-            bounding_box_t spell_bb = create_bb(proj.pos_x.h - proj.w / 2, proj.pos_y.h - proj.h / 2, proj.w, proj.h);
-            if(check_collision(player_bb, spell_bb)) {
-                enemy_projectile_pool[i].alive = 0;
+        if(alive & 0x1) {
+            projectile_t* proj = &enemy_projectile_pool[i];
+            _update_bb(BB_SPELL, proj->pos_x.h - proj->w / 2, proj->pos_y.h - proj->h / 2, proj->w, proj->h);
+            if(check_collision(_bbs[BB_PLAYER], _bbs[BB_SPELL])) {
+                enemy_projectile_alive &= ~(1 << i);
                 hide_sprite(enemy_projectile_pool[i].hw_sprite);
                 // TODO: Boss hits player logic
                 if(state.player.hp > 0) {
@@ -155,6 +171,7 @@ void update_game(void) {
                 }
             }
         }
+        alive >>= 1;
     }
 }
 
