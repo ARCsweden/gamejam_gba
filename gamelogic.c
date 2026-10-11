@@ -77,6 +77,7 @@ void update_game(void) {
         state.player.dead_pos_y.w += SPEED_DOWN;
     } else {
             waitpad(J_START);
+            
             reset();
         }
 

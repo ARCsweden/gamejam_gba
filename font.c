@@ -38,16 +38,37 @@ uint8_t ascii_to_tile_pos(char glyph) {
 }
 
 void render_text(uint8_t start_x, uint8_t start_y, char* text) {
+    render_text_colored(start_x, start_y, text, FONT_PALETTE_DEFAULT);
+}
+
+void render_text_colored(uint8_t start_x, uint8_t start_y, char* text, uint8_t palette) {
 
     uint8_t x = start_x;
     uint8_t y = start_y;
     uint16_t index = 0;
 
-    while(text[index]!='\0' && index < 16) {
+    while(index < 20 && x < 32) {
+        char glyph = ' ';
+        uint8_t tile_index;
+        tile_index = ascii_to_tile_pos(glyph);
+        set_win_tiles(x, y, 1, 1, &Font_map[tile_index]);
+        VBK_REG = VBK_ATTRIBUTES;
+        set_win_tiles(x, y, 1, 1, &palette);
+        VBK_REG = VBK_TILES;
+        x++;
+        index++;
+    }
+
+    index = 0;
+    x = start_x;
+    while(index < 20 && x < 32 && text[index]!='\0') {
         char glyph = text[index];
         uint8_t tile_index;
         tile_index = ascii_to_tile_pos(glyph);
         set_win_tiles(x, y, 1, 1, &Font_map[tile_index]);
+        VBK_REG = VBK_ATTRIBUTES;
+        set_win_tiles(x, y, 1, 1, &palette);
+        VBK_REG = VBK_TILES;
         x++;
         index++;
     }

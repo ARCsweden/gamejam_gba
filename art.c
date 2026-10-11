@@ -1,4 +1,5 @@
 #include "art.h"
+#include "font.h"
 
 #include "sprite_manager.h"
 
@@ -27,6 +28,15 @@ void init_ui_gfx(void) {
 
 void init_font(void) {
     set_bkg_data(Font_TILE_ORIGIN, Font_TILE_COUNT, Font_tiles);
+    // Font color 0 is the background; color 2 forms the letter strokes.
+    const palette_color_t player_text_palette[4] = {
+        Font_palettes[0], wizard_palettes[2], wizard_palettes[1], wizard_palettes[3]
+    };
+    const palette_color_t boss_text_palette[4] = {
+        Font_palettes[0], boss_palettes[2], boss_palettes[1], boss_palettes[3]
+    };
+    set_bkg_palette(FONT_PALETTE_PLAYER, 1, player_text_palette);
+    set_bkg_palette(FONT_PALETTE_BOSS, 1, boss_text_palette);
 }
 
 void init_boss_gfx(void) {
