@@ -29,8 +29,8 @@
 
 #define PLAYER_MAX_HP 5
 
-#define SHIELD_MOVE_SPEED TO_FIXED(0, 128)
-#define SHIELD_COOLDOWN 600 // 10s
+#define SHIELD_MOVE_SPEED TO_FIXED(1, 0)
+#define SHIELD_COOLDOWN 300 // 5s
 #define SHIELD_DURATION 180 // 3s (MAX is 255)
 
 struct gamestate_t {
