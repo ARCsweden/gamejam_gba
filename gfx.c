@@ -22,6 +22,7 @@ uint8_t bg_attr_row[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
 const uint8_t bg_attr = 1;
 
 void draw_health(void);
+void draw_boss_hp_bar(void);
 
 void init_gfx(void) {
     SPRITES_8x16;
@@ -100,9 +101,10 @@ void update_gfx(void) {
     set_win_tiles(1, 0, 1, 1, heart_map);
     set_win_tiles(2, 0, 1, 1, heart_map);
     char text[12] = "WIZARD!";
-    render_text(8, 0, text);
+    render_text(5, 0, text);
 
     draw_health();
+    draw_boss_hp_bar();
 
     // Render boss wizard
     move_metasprite_ex(carpet_metasprites[0], carpet_TILE_ORIGIN, 0, E_CARPET_SPRITE, state.boss.pos_x.h,  state.boss.pos_y.h);
@@ -130,4 +132,24 @@ void draw_health(void) {
         const uint8_t* map = (state.player.hp > i) ? heart_filled_map : heart_map;
         set_win_tiles(i, 0, 1, 1, map);
     }
+}
+
+void draw_boss_hp_bar(void) {
+    uint8_t segments = state.boss.hp >> 2;
+    uint8_t current_segment;
+
+    for(uint8_t i = 0; i < 8; ++i) {
+        
+    }
+
+    set_win_tiles(11, 0, 1, 1, &boss_health_bar_map[11]);
+    set_win_tiles(12, 0, 1, 1, &boss_health_bar_map[0]);
+    set_win_tiles(13, 0, 1, 1, &boss_health_bar_map[0]);
+    set_win_tiles(14, 0, 1, 1, &boss_health_bar_map[0]);
+    set_win_tiles(15, 0, 1, 1, &boss_health_bar_map[0]);
+    set_win_tiles(16, 0, 1, 1, &boss_health_bar_map[0]);
+    set_win_tiles(17, 0, 1, 1, &boss_health_bar_map[0]);
+    set_win_tiles(18, 0, 1, 1, &boss_health_bar_map[0]);
+
+    set_win_tiles(19, 0, 1, 1, &boss_health_bar_map[10]);
 }
