@@ -5,16 +5,14 @@
 #include <gb/gb.h>
 
 #define MAX_INST 16
-#define BOSS_MAXHP 10 
+#define BOSS_MAXHP 255 
 
 typedef enum ins_type {
     WAIT = 0,
-    MOVE = 1,
-    SHOOT_SMPL = 2,
-    SHOOT_SMPL_L = 3,
-    SHOOT_SMPL_R = 4,
-    SHOOT_LRG = 5,
-    NEW_INS = 6
+    MOVE,
+    SHOOT_SMPL,
+    SHOOT_LRG,
+    NEW_INS
 }ins_type;
 
 typedef struct instruction {
