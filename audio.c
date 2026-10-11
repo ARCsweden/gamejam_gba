@@ -32,7 +32,8 @@ void init_audio(void) {
     // the critical tags ensure no interrupts will be called while this block of code is being executed
     __critical {
         // Init and use huge drive to play our sample song
-        play_song(&music);
+        //play_song(&music);
+        play_song(&arabicuge);
         add_VBL(hUGE_dosound);
     }
 }
