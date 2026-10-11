@@ -1,6 +1,11 @@
 #include "art.h"
+#include "font.h"
 
 #include "sprite_manager.h"
+
+const palette_color_t boss_hit_palettes[4] = {
+	RGB8(  0,  0,  0), RGB8(255, 0, 230), RGB8(179, 0, 150), RGB8(102, 0, 65)
+	};
 
 void init_player_gfx(void) {
     set_sprite_data(carpet_TILE_ORIGIN, carpet_TILE_COUNT, carpet_tiles);
@@ -24,10 +29,21 @@ void init_ui_gfx(void) {
 	RGB8(255,255,255), RGB8(0, 0, 0), RGB8(255, 0, 25), RGB8(  0,  0,  0)
 	};
     set_bkg_palette(S_PAL(0), 1, ui_palette);
+
+    set_win_data(boss_health_bar_TILE_ORIGIN, boss_health_bar_TILE_COUNT, boss_health_bar_tiles);
 }
 
 void init_font(void) {
     set_bkg_data(Font_TILE_ORIGIN, Font_TILE_COUNT, Font_tiles);
+    // Font color 0 is the background; color 2 forms the letter strokes.
+    const palette_color_t player_text_palette[4] = {
+        Font_palettes[0], wizard_palettes[2], wizard_palettes[1], wizard_palettes[3]
+    };
+    const palette_color_t boss_text_palette[4] = {
+        Font_palettes[0], boss_palettes[2], boss_palettes[1], boss_palettes[3]
+    };
+    set_bkg_palette(FONT_PALETTE_PLAYER, 1, player_text_palette);
+    set_bkg_palette(FONT_PALETTE_BOSS, 1, boss_text_palette);
 }
 
 void init_boss_gfx(void) {

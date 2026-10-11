@@ -22,9 +22,11 @@ uint8_t bg_attr_row[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
 const uint8_t bg_attr = 1;
 
 void draw_health(void);
+void draw_boss_hp_bar(void);
 
 void init_gfx(void) {
     SPRITES_8x16;
+
 
     init_player_gfx();
     init_ui_gfx();
@@ -32,11 +34,7 @@ void init_gfx(void) {
     move_win(7, 136);
 
     uint16_t seed;
-    // waitpad(0xFF);
-    //waitpadup();
     seed = DIV_REG;
-    //waitpad(0xFF);
-    //waitpadup();
     seed |= (UWORD)DIV_REG << 8;
 
     initarand(seed);
@@ -70,6 +68,7 @@ void init_gfx(void) {
     enable_interrupts();
     SHOW_WIN;
     DISPLAY_ON;
+
 }
 
 void update_gfx(void) {
@@ -84,6 +83,8 @@ void update_gfx(void) {
         } else {
             move_metasprite_ex(wizard_metasprites[state.player.anim_frame], wizard_TILE_ORIGIN, 0, P_WIZARD_SPRITE, state.player.pos_x.h, state.player.dead_pos_y.h - 5);
         }
+        char text[12] = "You lost!";
+        render_text(8, 0, text);
     }
 
     // Render player shield
@@ -99,10 +100,10 @@ void update_gfx(void) {
     set_win_tiles(0, 0, 1, 1, heart_filled_map);
     set_win_tiles(1, 0, 1, 1, heart_map);
     set_win_tiles(2, 0, 1, 1, heart_map);
-    char text[12] = "WIZARD!";
-    render_text(8, 0, text);
-
     draw_health();
+    if(state.boss.hp > 0 && state.player.hp > 0) {
+        draw_boss_hp_bar();
+    }
 
     // Render boss wizard
     move_metasprite_ex(carpet_metasprites[0], carpet_TILE_ORIGIN, 0, E_CARPET_SPRITE, state.boss.pos_x.h,  state.boss.pos_y.h);
@@ -115,6 +116,8 @@ void update_gfx(void) {
         } else {
             move_metasprite_ex(boss_metasprites[0], boss_TILE_ORIGIN, 0, E_WIZARD_SPRITE, state.boss.pos_x.h, state.boss.dead_pos_y.h - 5);
         }
+        char text[12] = "You won!";
+        render_text(8, 0, text);
     }
 
     // Scroll background
@@ -130,4 +133,33 @@ void draw_health(void) {
         const uint8_t* map = (state.player.hp > i) ? heart_filled_map : heart_map;
         set_win_tiles(i, 0, 1, 1, map);
     }
+}
+
+void draw_boss_hp_bar(void) {
+    uint8_t segments = state.boss.hp >> 2;
+    uint8_t current_tile = 11;
+    uint8_t current_segment;
+
+    for(uint8_t i = 0; i < 8; ++i) {
+        current_segment = (1+i) * 8;
+        if(segments < current_segment) {
+            current_tile = segments % 8;
+        }
+        if(segments + 8 < current_segment) {
+            set_win_tiles(18-i, 0, 1, 1, &Font_map[0]);
+        } else {
+            set_win_tiles(18-i, 0, 1, 1, &boss_health_bar_map[current_tile]);
+        }
+    }
+
+    // set_win_tiles(11, 0, 1, 1, &boss_health_bar_map[11]);
+    // set_win_tiles(12, 0, 1, 1, &boss_health_bar_map[0]);
+    // set_win_tiles(13, 0, 1, 1, &boss_health_bar_map[0]);
+    // set_win_tiles(14, 0, 1, 1, &boss_health_bar_map[0]);
+    // set_win_tiles(15, 0, 1, 1, &boss_health_bar_map[0]);
+    // set_win_tiles(16, 0, 1, 1, &boss_health_bar_map[0]);
+    // set_win_tiles(17, 0, 1, 1, &boss_health_bar_map[0]);
+    // set_win_tiles(18, 0, 1, 1, &boss_health_bar_map[0]);
+
+    set_win_tiles(19, 0, 1, 1, &boss_health_bar_map[10]);
 }

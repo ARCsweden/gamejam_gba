@@ -23,11 +23,13 @@ void init_gamestate(void) {
 
     state.boss.hp = BOSS_MAXHP;
     state.boss.spell_cooldown = 0;
+    state.boss.hit_timer = 0;
 
     state.player.spell_cooldown = 0;
     state.player.anim_frame = 0;
     state.player.shield = 0;
     state.player.hp = PLAYER_MAX_HP;
+    state.player.hit_timer = 0;
 
     state.shield_powerup.cooldown = 60; //600;
     state.shield_powerup.spawned = 0;
