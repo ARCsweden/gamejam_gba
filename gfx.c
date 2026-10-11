@@ -3,6 +3,7 @@
 #include "gamestate.h"
 #include "sprite_manager.h"
 #include "player.h"
+#include "shield.h"
 #include "art.h"
 #include "rand.h"
 #include "font.h"
@@ -120,6 +121,7 @@ void update_gfx(void) {
     scroll_bkg(0,-1);
 
     draw_projectiles();
+    draw_shield_powerup();
 }
 
 void draw_health(void) {

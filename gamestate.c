@@ -28,4 +28,9 @@ void init_gamestate(void) {
     state.player.anim_frame = 0;
     state.player.shield = 0;
     state.player.hp = PLAYER_MAX_HP;
+
+    state.shield_powerup.cooldown = 60; //600;
+    state.shield_powerup.spawned = 0;
+    state.shield_powerup.frame = 0;
+    state.shield_powerup.frame_timer = 0;
 }
