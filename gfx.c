@@ -26,17 +26,14 @@ void draw_health(void);
 void init_gfx(void) {
     SPRITES_8x16;
 
+
     init_player_gfx();
     init_ui_gfx();
     init_font();
     move_win(7, 136);
 
     uint16_t seed;
-    // waitpad(0xFF);
-    //waitpadup();
     seed = DIV_REG;
-    //waitpad(0xFF);
-    //waitpadup();
     seed |= (UWORD)DIV_REG << 8;
 
     initarand(seed);
@@ -70,6 +67,7 @@ void init_gfx(void) {
     enable_interrupts();
     SHOW_WIN;
     DISPLAY_ON;
+
 }
 
 void update_gfx(void) {
@@ -84,6 +82,8 @@ void update_gfx(void) {
         } else {
             move_metasprite_ex(wizard_metasprites[state.player.anim_frame], wizard_TILE_ORIGIN, 0, P_WIZARD_SPRITE, state.player.pos_x.h, state.player.dead_pos_y.h - 5);
         }
+        char text[12] = "You lost!";
+        render_text(8, 0, text);
     }
 
     // Render player shield
@@ -99,9 +99,6 @@ void update_gfx(void) {
     set_win_tiles(0, 0, 1, 1, heart_filled_map);
     set_win_tiles(1, 0, 1, 1, heart_map);
     set_win_tiles(2, 0, 1, 1, heart_map);
-    char text[12] = "WIZARD!";
-    render_text(8, 0, text);
-
     draw_health();
 
     // Render boss wizard
@@ -115,6 +112,8 @@ void update_gfx(void) {
         } else {
             move_metasprite_ex(boss_metasprites[0], boss_TILE_ORIGIN, 0, E_WIZARD_SPRITE, state.boss.pos_x.h, state.boss.dead_pos_y.h - 5);
         }
+        char text[12] = "You won!";
+        render_text(8, 0, text);
     }
 
     // Scroll background

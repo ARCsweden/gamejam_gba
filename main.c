@@ -7,6 +7,7 @@
 #include "gamelogic.h"
 #include "gamestate.h"
 #include "boss.h"
+#include "intro.h"
 
 void main(void)
 {
@@ -20,6 +21,8 @@ void main(void)
     init_gamestate();
     // set initial boss logic
     init_boss_logic();
+
+    run_intro();
 
     // Loop forever
     while(1) {
