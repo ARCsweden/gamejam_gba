@@ -87,7 +87,11 @@ void update_game(void) {
         //state.player.shield = (buttons & J_B);
     } else if(state.player.dead_pos_y.h <= SPRITE_LAYER_OOB_Y) {
         state.player.dead_pos_y.w += SPEED_DOWN;
-    }
+    } else {
+            waitpad(J_START);
+            
+            reset();
+        }
 
     buttons_prev = buttons;
 
@@ -97,6 +101,9 @@ void update_game(void) {
     } else {
         if(state.boss.dead_pos_y.h <= SPRITE_LAYER_OOB_Y) {
             state.boss.dead_pos_y.w += SPEED_DOWN;
+        } else {
+            waitpad(J_START);
+            reset();
         }
     }
 
