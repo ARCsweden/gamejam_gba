@@ -85,8 +85,6 @@ void update_gfx(void) {
         }
         char text[12] = "You lost!";
         render_text(8, 0, text);
-        waitpad(J_START);
-        reset();
     }
 
     // Render player shield
@@ -120,8 +118,6 @@ void update_gfx(void) {
         }
         char text[12] = "You won!";
         render_text(8, 0, text);
-        waitpad(J_START);
-        reset();
     }
 
     // Scroll background
