@@ -134,7 +134,7 @@ void update_game(void) {
     color3_counter = color3_counter + color3_delta;
 
     const palette_color_t ui_palette[4] = {
-	RGB8(255,255,255), RGB8(0, 0, 0), RGB8(255, color2_counter, color3_counter), RGB8(  0,  0,  0)
+	RGB8(255,255,255), RGB8(0, 0, 0), RGB8(255, color2_counter, color3_counter), RGB8(  100,  10,  255)
 	};
     set_bkg_palette(S_PAL(0), 1, ui_palette);
 

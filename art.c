@@ -29,6 +29,8 @@ void init_ui_gfx(void) {
 	RGB8(255,255,255), RGB8(0, 0, 0), RGB8(255, 0, 25), RGB8(  0,  0,  0)
 	};
     set_bkg_palette(S_PAL(0), 1, ui_palette);
+
+    set_win_data(boss_health_bar_TILE_ORIGIN, boss_health_bar_TILE_COUNT, boss_health_bar_tiles);
 }
 
 void init_font(void) {

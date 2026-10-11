@@ -11,6 +11,7 @@
 #include "assets/heart.h"
 #include "assets/heart_filled.h"
 #include "assets/Font.h"
+#include "assets/boss_health_bar.h"
 
 // SPRITE TILES:
 // 0: Carpet (4 tiles)
