@@ -11,7 +11,8 @@
 
 void main(void)
 {
-    cpu_fast();
+    // Note, this doesn't appear to work on hardware, so keep it disabled
+    //cpu_fast();
 
     // Initialize graphics
     init_gfx();

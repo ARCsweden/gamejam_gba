@@ -1,7 +1,7 @@
 #include "intro.h"
 #include "font.h"
 #include "gfx.h"
-
+#include "gamestate.h"
 
 void run_intro(void){
 
@@ -32,5 +32,9 @@ void run_intro(void){
 
 
     render_text(0, 0, " ");
+
+    // Force update of player & enemy HP
+    state.player.hp_prev = 0;
+    state.boss.hp_prev = 0;
 }
     
