@@ -22,6 +22,7 @@ void init_gamestate(void) {
     state.boss.dir = 0;
 
     state.boss.hp = BOSS_MAXHP;
+    state.boss.hp_prev = 0;
     state.boss.spell_cooldown = 0;
     state.boss.hit_timer = 0;
 
@@ -29,6 +30,7 @@ void init_gamestate(void) {
     state.player.anim_frame = 0;
     state.player.shield = 0;
     state.player.hp = PLAYER_MAX_HP;
+    state.player.hp_prev = 0;
     state.player.hit_timer = 0;
 
     state.shield_powerup.cooldown = 60; //600;

@@ -71,6 +71,13 @@ void init_gfx(void) {
 
 }
 
+#define END_STATE_WON 0x1
+#define END_STATE_LOST 0x2
+uint8_t end_state = 0;
+
+const char lost_text[] = "You lost!";
+const char won_text[] = "You won!";
+
 void update_gfx(void) {
     // Render player wizard
     move_metasprite_ex(carpet_metasprites[0], carpet_TILE_ORIGIN, 0, P_CARPET_SPRITE, state.player.pos_x.h,  state.player.pos_y.h);
@@ -83,8 +90,10 @@ void update_gfx(void) {
         } else {
             move_metasprite_ex(wizard_metasprites[state.player.anim_frame], wizard_TILE_ORIGIN, 0, P_WIZARD_SPRITE, state.player.pos_x.h, state.player.dead_pos_y.h - 5);
         }
-        char text[12] = "You lost!";
-        render_text(8, 0, text);
+        if(~end_state & END_STATE_LOST) {
+            end_state |= END_STATE_LOST;
+            render_text(8, 0, lost_text);
+        }
     }
 
     // Render player shield
@@ -95,14 +104,14 @@ void update_gfx(void) {
         hide_sprite(P_SHIELD_SPRITE + 1);
     }
 
-    // Render UI
-    move_win(7, 136);
-    set_win_tiles(0, 0, 1, 1, heart_filled_map);
-    set_win_tiles(1, 0, 1, 1, heart_map);
-    set_win_tiles(2, 0, 1, 1, heart_map);
-    draw_health();
-    if(state.boss.hp > 0 && state.player.hp > 0) {
+    // Render Health UI (but only when updated)
+    if(state.player.hp != state.player.hp_prev) {
+        draw_health();
+        state.player.hp_prev = state.player.hp;
+    }
+    if(state.boss.hp > 0 && (state.boss.hp != state.boss.hp_prev) && state.player.hp > 0) {
         draw_boss_hp_bar();
+        state.boss.hp_prev = state.boss.hp;
     }
 
     // Render boss wizard
@@ -116,8 +125,11 @@ void update_gfx(void) {
         } else {
             move_metasprite_ex(boss_metasprites[0], boss_TILE_ORIGIN, 0, E_WIZARD_SPRITE, state.boss.pos_x.h, state.boss.dead_pos_y.h - 5);
         }
-        char text[12] = "You won!";
-        render_text(8, 0, text);
+        
+        if(~end_state & END_STATE_WON) {
+            end_state |= END_STATE_WON;
+            render_text(8, 0, won_text);
+        }
     }
 
     // Scroll background

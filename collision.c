@@ -1,18 +1,18 @@
 #include "collision.h"
 
 // Returns 1 on collision, 0 on no overlap
-uint8_t check_collision(bounding_box_t a, bounding_box_t b) {
+uint8_t check_collision(bounding_box_t* a, bounding_box_t* b) {
     // Check if we are outside of the bounding boxes (no overlap possible)
-    if(a.right < b.left) {
+    if(a->right < b->left) {
         return 0;
     }
-    if(a.left >= b.right) {
+    if(a->left >= b->right) {
         return 0;
     }
-    if(a.top >= b.bottom) {
+    if(a->top >= b->bottom) {
         return 0;
     }
-    if(a.bottom < b.top) {
+    if(a->bottom < b->top) {
         return 0;
     }
     // If all these fail, there is an overlap/collision

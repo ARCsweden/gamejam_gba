@@ -46,14 +46,14 @@ uint8_t frame = 0;
 static bounding_box_t _bbs[5];
 
 void _update_bb(uint8_t index, uint8_t x, uint8_t y, uint8_t w, uint8_t h) {
-    _bbs[index].right = x + w;
-    _bbs[index].left = x;
-    _bbs[index].top = y;
-    _bbs[index].bottom = y + h;
+    bounding_box_t* bb = &_bbs[index];
+    bb->right = x + w;
+    bb->left = x;
+    bb->top = y;
+    bb->bottom = y + h;
 }
 
-void update_game(void) {
-    // Input
+void handle_input(void) {
     // J_START, J_SELECT, J_A, J_B, J_UP, J_DOWN, J_LEFT, J_RIGHT
     buttons = joypad();
     // Checking for input goes here ...
@@ -83,36 +83,21 @@ void update_game(void) {
                 sound_ch1_counter = shoot_sfx();
             }
         }
-        // Activate shield when holding B
-        //state.player.shield = (buttons & J_B);
     } else if(state.player.dead_pos_y.h <= SPRITE_LAYER_OOB_Y) {
         state.player.dead_pos_y.w += SPEED_DOWN;
     } else {
-            waitpad(J_START);
-            
-            reset();
-        }
-
-    buttons_prev = buttons;
-
-    if(state.boss.hp > 0) {
-        update_boss_wave();
-        update_boss_logic();
-    } else {
-        if(state.boss.dead_pos_y.h <= SPRITE_LAYER_OOB_Y) {
-            state.boss.dead_pos_y.w += SPEED_DOWN;
-        } else {
-            waitpad(J_START);
-            reset();
-        }
+        waitpad(J_START);
+        reset();
     }
+    // Note, not used atm
+    buttons_prev = buttons;
+}
 
-    // Frame timer dependent animation
-    if(state.player.spell_cooldown > 0) state.player.spell_cooldown--;
-    if(state.boss.spell_cooldown > 0) state.boss.spell_cooldown--;
+palette_color_t ui_palette[4] = {
+    RGB8(255,255,255), RGB8(0, 0, 0), RGB8(255, 0, 0), RGB8(  100,  10,  255)
+};
 
-
-    // Shifting palette over time
+void update_ui_palette(void) {
     if(color2_counter > (250-color2_delta)) {
         color2_delta = color2_delta * -1;
         color2_counter = 250-color2_delta;
@@ -133,12 +118,12 @@ void update_game(void) {
     color2_counter = color2_counter + color2_delta;
     color3_counter = color3_counter + color3_delta;
 
-    const palette_color_t ui_palette[4] = {
-	RGB8(255,255,255), RGB8(0, 0, 0), RGB8(255, color2_counter, color3_counter), RGB8(  100,  10,  255)
-	};
-    set_bkg_palette(S_PAL(0), 1, ui_palette);
+    ui_palette[2] = RGB8(255, color2_counter, color3_counter);
 
-    // Sound Handler
+    set_bkg_palette(S_PAL(0), 1, ui_palette);
+}
+
+void update_sound(void) {
     // Counters for each sound channel to resume playing music after a SFX
     if(sound_ch1_counter > 0) {
         sound_ch1_counter--;
@@ -164,9 +149,9 @@ void update_game(void) {
             hUGE_mute_channel(HT_CH4,HT_CH_PLAY);
         }
     }
+}
 
-
-
+void update_frame_animation(void) {
     frame++;
     if(frame >= 10) {
         frame = 0;
@@ -186,9 +171,9 @@ void update_game(void) {
             set_sprite_palette(S_PAL(4), 1, boss_palettes);
         }
     }
-    update_projectiles();
-    update_shield_powerup();
+}
 
+void update_collisions(void) {
     // Check collisions (last two parameters define the size of the hitbox, w/h)
     _update_bb(BB_PLAYER, state.player.pos_x.h - 4, state.player.pos_y.h - 4, 8, 8);
     if(state.boss.hp) {
@@ -202,18 +187,18 @@ void update_game(void) {
     }
 
     // Ragebait check
-    if(state.player.hp > 0 && check_collision(_bbs[BB_BOSS], _bbs[BB_PLAYER])) {
+    if(state.player.hp > 0 && check_collision(&_bbs[BB_BOSS], &_bbs[BB_PLAYER])) {
         state.player.hp = 0;
         state.player.dead_pos_y = state.player.pos_y;
     }
 
     // Check collision between boss and spells
-    alive = player_projectile_alive;
+    uint8_t alive = player_projectile_alive;
     for(uint8_t i = 0; i < NUM_PLAYER_SPELLS; ++i) {
         if(alive & 0x1) {
             projectile_t* proj = &player_projectile_pool[i];
             _update_bb(BB_SPELL, proj->pos_x.h - proj->w / 2, proj->pos_y.h - proj->h / 2, proj->w, proj->h);
-            if(check_collision(_bbs[BB_BOSS], _bbs[BB_SPELL])) {
+            if(check_collision(&_bbs[BB_BOSS], &_bbs[BB_SPELL])) {
                 player_projectile_alive &= ~(1 << i);
                 hide_sprite(player_projectile_pool[i].hw_sprite);
                 state.boss.hit_timer = HIT_FX_FRAMES;
@@ -236,11 +221,11 @@ void update_game(void) {
         if(alive & 0x1) {
             projectile_t* proj = &enemy_projectile_pool[i];
             _update_bb(BB_SPELL, proj->pos_x.h - proj->w / 2, proj->pos_y.h - proj->h / 2, proj->w, proj->h);
-            if(state.player.shield && check_collision(_bbs[BB_SHIELD], _bbs[BB_SPELL])) {
+            if(state.player.shield && check_collision(&_bbs[BB_SHIELD], &_bbs[BB_SPELL])) {
                 enemy_projectile_alive &= ~(1 << i);
                 hide_sprite(enemy_projectile_pool[i].hw_sprite);
             }
-            else if(check_collision(_bbs[BB_PLAYER], _bbs[BB_SPELL])) {
+            else if(check_collision(&_bbs[BB_PLAYER], &_bbs[BB_SPELL])) {
                 enemy_projectile_alive &= ~(1 << i);
                 hide_sprite(enemy_projectile_pool[i].hw_sprite);
                 state.player.hit_timer = HIT_FX_FRAMES;
@@ -259,9 +244,46 @@ void update_game(void) {
     // Check player picking up shield powerup
     if(state.shield_powerup.spawned && state.player.hp > 0) {
         _update_bb(BB_SHIELD_POWERUP, state.shield_powerup.pos_x.h - 5, state.shield_powerup.pos_y.h - 5, 10, 10);
-        if(check_collision(_bbs[BB_PLAYER], _bbs[BB_SHIELD_POWERUP])) {
+        if(check_collision(&_bbs[BB_PLAYER], &_bbs[BB_SHIELD_POWERUP])) {
             pickup_shield();
         }
     }
+}
+
+void update_game(void) {
+    // Input
+    handle_input();
+
+    // Run boss logic
+    if(state.boss.hp > 0) {
+        update_boss_wave();
+        update_boss_logic();
+    } else {
+        if(state.boss.dead_pos_y.h <= SPRITE_LAYER_OOB_Y) {
+            state.boss.dead_pos_y.w += SPEED_DOWN;
+        } else {
+            waitpad(J_START);
+            reset();
+        }
+    }
+
+    // Frame timer dependent animation
+    if(state.player.spell_cooldown > 0) state.player.spell_cooldown--;
+    if(state.boss.spell_cooldown > 0) state.boss.spell_cooldown--;
+
+    // Shifting palette over time
+    update_ui_palette();
+
+    // Sound Handler
+    update_sound();
+
+    // animate player, boss and hit FX
+    update_frame_animation();
+
+    // Move entities around
+    update_projectiles();
+    update_shield_powerup();
+
+    update_collisions();
 }
 

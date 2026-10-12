@@ -11,6 +11,7 @@ struct player_t {
     uint8_t anim_frame;
     uint8_t shield;
     uint8_t hp;
+    uint8_t hp_prev;
     uint8_t hit_timer;
 };
 
