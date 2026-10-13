@@ -37,11 +37,10 @@ void main(void)
         } else {
             slowdown_frame--;
         }
-        // Render graphics
-        update_gfx();
-
 		// Done processing, yield CPU and wait for start of next frame
         vsync();
+        // Render graphics
+        update_gfx();
     }
 }
 

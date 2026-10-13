@@ -79,6 +79,9 @@ const char lost_text[] = "You lost!";
 const char won_text[] = "You won!";
 
 void update_gfx(void) {
+    // Scroll background
+    scroll_bkg(0,-1);
+
     // Render player wizard
     move_metasprite_ex(carpet_metasprites[0], carpet_TILE_ORIGIN, 0, P_CARPET_SPRITE, state.player.pos_x.h,  state.player.pos_y.h);
     if(state.player.hp > 0) {
@@ -131,9 +134,6 @@ void update_gfx(void) {
             render_text(8, 0, won_text);
         }
     }
-
-    // Scroll background
-    scroll_bkg(0,-1);
 
     draw_projectiles();
     draw_shield_powerup();
