@@ -9,12 +9,12 @@
 // The lowest indice has the highest priority in terms of what is drawn
 
 // Player sprites (2 wide)
-#define P_WIZARD_SPRITE 0
-#define P_CARPET_SPRITE 2
-#define P_SHIELD_SPRITE 4
 // Enemy sprites (2 wide)
-#define E_WIZARD_SPRITE 6
-#define E_CARPET_SPRITE 8
+#define P_WIZARD_SPRITE 0
+#define E_WIZARD_SPRITE 2
+#define P_CARPET_SPRITE 4
+#define E_CARPET_SPRITE 6
+#define P_SHIELD_SPRITE 8
 // Enemy large spells (2 wide)
 #define S_LARGE_SPRITE 10
 // NUMBER OF ENEMIES ON SCREEN AT THE SAME TIME
