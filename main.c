@@ -9,6 +9,9 @@
 #include "boss.h"
 #include "intro.h"
 
+#define SLOWDOWN_FRAMES 2
+uint8_t slowdown_frame = 0;
+
 void main(void)
 {
     // Note, this doesn't appear to work on hardware, so keep it disabled
@@ -27,9 +30,13 @@ void main(void)
 
     // Loop forever
     while(1) {
-        // Read input and update ingame logic
-        update_game();
-
+        // Read input and update ingame logic (note slowdown effect when you've won/lost)
+        if((end_state == 0) || (slowdown_frame == 0)) {
+            slowdown_frame = SLOWDOWN_FRAMES;
+            update_game();
+        } else {
+            slowdown_frame--;
+        }
         // Render graphics
         update_gfx();
 
